@@ -1,0 +1,104 @@
+@import url('https://fonts.cdnfonts.com/css/open-sauce-one');
+
+body {
+    margin: 0;
+    font-family: 'Open Sauce One', sans-serif;
+}
+
+/* Cabeçalho */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #dde0cf;
+    padding: 20px 60px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.logo {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.logo img {
+    height: 100px;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+/* Navegação */
+.nav-links {
+    display: flex;
+    gap: 60px;
+    position: relative;
+    top: 10px;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+    transition: color 0.2s ease;
+    background: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+    color: white;
+    background: none;
+    outline: none;
+    box-shadow: none;
+}
+
+/* Ícone do usuário */
+.user-icon {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.user-icon img {
+    height: 45px;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.user-icon img:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+/* Seção Sobre Nós */
+.about {
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.about p {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.6;
+}
