@@ -1,187 +1,28 @@
 <div class="home-container">
-  <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="logo">
-        <img src="assets/logoFortalTenis.png" alt="FortalTenis" class="logo-img" onerror="this.style.display='none'">
-        <h1>FortalTenis</h1>
-      </div>
-      <nav class="nav">
-        <a class="nav-link active">Início</a>
-        <a class="nav-link">Esportes</a>
-        <a class="nav-link">Marcas</a>
-        <a class="nav-link">Pesquisar</a>
-      </nav>
-      <div class="search-cart">
-        <input type="text" placeholder="Pesquisar..." class="search-input">
-        <button class="cart-btn">🛒</button>
-      </div>
+  <section class="hero-banner">
+    <div class="hero-content">
+      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zJlnoIrRrQH2HC0tGl3LNq3HpjP1lh.png" alt="Fortal Logo" class="hero-logo" />
+      <h1 class="hero-title">Bem-vindo à Fortal — Tênis Esportivos de Alta Performance</h1>
     </div>
-  </header>
+  </section>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-text">
-          <h1 class="hero-title">FortalTenis</h1>
-          <p class="hero-subtitle">Performance e estilo para suas conquistas</p>
-          <button class="cta-button">Ver Coleção Completa</button>
+  <section class="featured-products">
+    <h2 class="section-title">Produtos em Destaque</h2>
+    <div class="products-grid">
+      <div class="product-card" *ngFor="let product of featuredProducts">
+        <div class="product-image">
+          <img [src]="product.image" [alt]="product.name" />
         </div>
-        <div class="hero-image">
-          <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Atleta de basquete" class="sports-image">
+        <div class="product-info">
+          <h3 class="product-name">{{ product.name }}</h3>
+          <p class="product-price">{{ product.price | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
+          <button class="btn-view-more">Ver mais</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Products -->
-  <section class="featured-section">
-    <div class="container">
-      <h2 class="section-title">Tênis em Destaque</h2>
-      
-      <div class="products-grid">
-        <div class="product-card">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Nike Air Jordan" class="product-img">
-            <div class="product-badge">Novo</div>
-          </div>
-          <div class="product-info">
-            <h3 class="product-name">Nike Air Jordan 1 Retro</h3>
-            <p class="product-brand">Nike • Air Jordan 1</p>
-            <p class="product-color">Masculino • Couro</p>
-            <div class="sizes-section">
-              <span class="sizes-label">Tamanhos disponíveis:</span>
-              <div class="sizes-list">
-                <span class="size-tag">38</span>
-                <span class="size-tag">39</span>
-                <span class="size-tag">40</span>
-                <span class="size-tag">41</span>
-                <span class="size-tag">42</span>
-                <span class="size-tag">43</span>
-              </div>
-            </div>
-            <div class="product-price">R$ 899,90</div>
-            <div class="product-actions">
-              <button class="btn-details" (click)="verDetalhes('Nike Air Jordan 1 Retro')">Ver Detalhes</button>
-              <button class="btn-cart" (click)="adicionarAoCarrinho('Nike Air Jordan 1 Retro')">🛒 Add Carrinho</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Adidas Forum" class="product-img">
-            <div class="product-badge">Popular</div>
-          </div>
-          <div class="product-info">
-            <h3 class="product-name">Adidas Forum Low CL</h3>
-            <p class="product-brand">Adidas • Forum Low</p>
-            <p class="product-color">Unissex • Couro</p>
-            <div class="sizes-section">
-              <span class="sizes-label">Tamanhos disponíveis:</span>
-              <div class="sizes-list">
-                <span class="size-tag">37</span>
-                <span class="size-tag">38</span>
-                <span class="size-tag">39</span>
-                <span class="size-tag">40</span>
-                <span class="size-tag">41</span>
-                <span class="size-tag">42</span>
-              </div>
-            </div>
-            <div class="product-price">R$ 699,90</div>
-            <div class="product-actions">
-              <button class="btn-details" (click)="verDetalhes('Adidas Forum Low CL')">Ver Detalhes</button>
-              <button class="btn-cart" (click)="adicionarAoCarrinho('Adidas Forum Low CL')">🛒 Add Carrinho</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <div class="product-image">
-            <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Puma RS-X" class="product-img">
-            <div class="product-badge">Lançamento</div>
-          </div>
-          <div class="product-info">
-            <h3 class="product-name">Puma RS-X Toys</h3>
-            <p class="product-brand">Puma • RS-X Toys</p>
-            <p class="product-color">Unissex • Sintético</p>
-            <div class="sizes-section">
-              <span class="sizes-label">Tamanhos disponíveis:</span>
-              <div class="sizes-list">
-                <span class="size-tag">38</span>
-                <span class="size-tag">39</span>
-                <span class="size-tag">40</span>
-                <span class="size-tag">41</span>
-                <span class="size-tag">42</span>
-                <span class="size-tag">43</span>
-                <span class="size-tag">44</span>
-              </div>
-            </div>
-            <div class="product-price">R$ 549,90</div>
-            <div class="product-actions">
-              <button class="btn-details" (click)="verDetalhes('Puma RS-X Toys')">Ver Detalhes</button>
-              <button class="btn-cart" (click)="adicionarAoCarrinho('Puma RS-X Toys')">🛒 Add Carrinho</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Categories -->
-  <section class="categories-section">
-    <div class="container">
-      <h2 class="section-title">Categorias</h2>
-      <div class="categories-grid">
-        <div class="category-card">
-          <div class="category-icon">👟</div>
-          <h3>Todos os Tênis</h3>
-          <p>Explore nossa coleção completa</p>
-        </div>
-        <div class="category-card">
-          <div class="category-icon">🏀</div>
-          <h3>Basquete</h3>
-          <p>Performance em quadra</p>
-        </div>
-        <div class="category-card">
-          <div class="category-icon">⚡</div>
-          <h3>Lançamentos</h3>
-          <p>Novos modelos disponíveis</p>
-        </div>
-        <div class="category-card">
-          <div class="category-icon">🔥</div>
-          <h3>Ofertas</h3>
-          <p>Promoções especiais</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
   <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>FortalTenis</h3>
-          <p>Sua loja especializada em tênis de performance e estilo.</p>
-        </div>
-        <div class="footer-section">
-          <h4>Links Rápidos</h4>
-          <a href="#">Sobre nós</a>
-          <a href="#">Contato</a>
-          <a href="#">Política de entrega</a>
-        </div>
-        <div class="footer-section">
-          <h4>Suporte</h4>
-          <a href="#">FAQ</a>
-          <a href="#">Trocas e devoluções</a>
-          <a href="#">Status do pedido</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 FortalTenis. Todos os direitos reservados.</p>
-      </div>
-    </div>
+    <p>© 2025 Fortal Tênis Esportivos — Todos os direitos reservados.</p>
   </footer>
 </div>

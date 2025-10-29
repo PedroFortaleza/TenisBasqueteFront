@@ -1,1 +1,18 @@
-<router-outlet></router-outlet>
+<header class="header">
+  <div class="header-container">
+    <div class="logo">
+      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zJlnoIrRrQH2HC0tGl3LNq3HpjP1lh.png" alt="Fortal Logo" />
+    </div>
+    <nav class="nav-menu">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Início</a>
+      <a routerLink="/modelo" routerLinkActive="active">Modelo</a>
+      <a routerLink="/marca" routerLinkActive="active">Marca</a>
+      <a routerLink="/esporte" routerLinkActive="active">Esporte</a>
+      <a routerLink="/carrinho" routerLinkActive="active">Carrinho</a>
+    </nav>
+  </div>
+</header>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
