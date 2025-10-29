@@ -37,6 +37,6 @@ export class ItemPedidoService {
   }
 
   calcularSubtotal(itemPedido: ItemPedido): number {
-    return itemPedido.quantidade * itemPedido.precolUnitario;
+    return itemPedido.quantidade * itemPedido.precoUnitario;
   }
 }

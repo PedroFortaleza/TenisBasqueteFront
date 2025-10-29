@@ -4,3 +4,5 @@ export interface Pedido {
   status: string;
   total: number;
 }
+
+

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Estoque } from '../models/estoque.mode';
+import { Estoque } from '../models/estoque.model';
 
 @Injectable({
   providedIn: 'root'
