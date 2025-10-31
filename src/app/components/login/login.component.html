@@ -1,0 +1,62 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Login</h1>
+      <p>Acesse sua conta Fortal</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          class="form-control"
+          placeholder="seu@email.com">
+        <div *ngIf="email?.invalid && email?.touched" class="error-message">
+          <span *ngIf="email?.errors?.['required']">Email é obrigatório</span>
+          <span *ngIf="email?.errors?.['email']">Email inválido</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input 
+          type="password" 
+          id="senha" 
+          formControlName="senha" 
+          class="form-control"
+          placeholder="Sua senha">
+        <div *ngIf="senha?.invalid && senha?.touched" class="error-message">
+          <span *ngIf="senha?.errors?.['required']">Senha é obrigatória</span>
+          <span *ngIf="senha?.errors?.['minlength']">Mínimo 6 caracteres</span>
+        </div>
+      </div>
+
+      <button 
+        type="submit" 
+        [disabled]="loginForm.invalid || isLoading" 
+        class="btn-login">
+        {{ isLoading ? 'Entrando...' : 'Entrar' }}
+      </button>
+
+      <!-- Credenciais de teste atualizadas -->
+      <div class="test-credentials">
+        <p>Credenciais do Administrador:</p>
+        <button type="button" (click)="preencherCredenciaisAdmin()" class="btn-test">
+          Preencher Admin
+        </button>
+        <small>pedrofortal@example.com / 123456</small>
+      </div>
+    </form>
+
+    <div *ngIf="mensagemErro" class="error-message global-error">
+      {{ mensagemErro }}
+    </div>
+
+    <div class="login-footer">
+      <p>Não tem uma conta? <a routerLink="/conta">Cadastre-se</a></p>
+    </div>
+  </div>
+</div>

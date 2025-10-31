@@ -1,0 +1,146 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Gerenciar Marcas</h1>
+    <p>Cadastre e gerencie as marcas do sistema</p>
+    <button (click)="voltarParaGerenciamento()" class="btn-voltar">← Voltar</button>
+  </div>
+
+  <div class="form-section">
+    <h2>{{ editMode ? 'Editar Marca' : 'Cadastrar Nova Marca' }}</h2>
+    
+    <form [formGroup]="marcaForm" (ngSubmit)="onSubmit()" class="entity-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nome">Nome da Marca *</label>
+          <input 
+            type="text" 
+            id="nome" 
+            formControlName="nome" 
+            class="form-control" 
+            placeholder="Ex: Nike, Adidas, Puma..."
+          >
+          <div *ngIf="nome?.invalid && nome?.touched" class="error-message">
+            Nome é obrigatório e deve ter pelo menos 2 caracteres
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="paisOrigem">País de Origem</label>
+          <input 
+            type="text" 
+            id="paisOrigem" 
+            formControlName="paisOrigem" 
+            class="form-control" 
+            placeholder="Ex: Estados Unidos, Alemanha..."
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="anofundacao">Ano de Fundação</label>
+          <input 
+            type="number" 
+            id="anofundacao" 
+            formControlName="anofundacao" 
+            class="form-control" 
+            placeholder="Ex: 1949"
+            min="1800"
+            max="2024"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="siteOficial">Site Oficial</label>
+          <input 
+            type="url" 
+            id="siteOficial" 
+            formControlName="siteOficial" 
+            class="form-control" 
+            placeholder="Ex: https://nike.com"
+          >
+          <div *ngIf="siteOficial?.invalid && siteOficial?.touched" class="error-message">
+            URL inválida
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input 
+          type="checkbox" 
+          id="ativa" 
+          formControlName="ativa"
+        >
+        <label for="ativa">Marca ativa</label>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="marcaForm.invalid || isLoading"
+        >
+          {{ editMode ? 'Atualizar Marca' : 'Cadastrar Marca' }}
+        </button>
+        
+        <button 
+          *ngIf="editMode" 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="cancelarEdicao()"
+          [disabled]="isLoading"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="mensagem" class="message" [class.success]="!mensagem.includes('Erro')" [class.error]="mensagem.includes('Erro')">
+      {{ mensagem }}
+    </div>
+  </div>
+
+  <!-- Lista de Marcas Cadastradas -->
+  <div class="list-section">
+    <h2>Marcas Cadastradas ({{ marcas.length }})</h2>
+    
+    <div class="id-info">
+      <p><strong>💡 Dica:</strong> Use o ID da marca ao cadastrar um tênis</p>
+    </div>
+    
+    <div *ngIf="isLoading && marcas.length === 0" class="loading">
+      Carregando marcas...
+    </div>
+
+    <div *ngIf="!isLoading && marcas.length === 0" class="no-data">
+      Nenhuma marca cadastrada.
+    </div>
+
+    <div class="entity-grid" *ngIf="marcas.length > 0">
+      <div *ngFor="let marca of marcas" class="entity-card">
+        <div class="entity-info">
+          <div class="entity-header">
+            <h3>{{ marca.nome }}</h3>
+            <span class="entity-id">ID: {{ marca.id }}</span>
+          </div>
+          <div class="entity-details">
+            <span *ngIf="marca.paisOrigem" class="pais-origem">
+              {{ marca.paisOrigem }}
+              <span *ngIf="marca.anofundacao"> • {{ marca.anofundacao }}</span>
+            </span>
+            <span *ngIf="marca.siteOficial" class="site">
+              <a [href]="marca.siteOficial" target="_blank" rel="noopener">Site</a>
+            </span>
+            <span class="status" [class.ativo]="marca.ativa" [class.inativo]="!marca.ativa">
+              {{ marca.ativa ? 'Ativa' : 'Inativa' }}
+            </span>
+          </div>
+        </div>
+        <div class="entity-actions">
+          <button (click)="editarMarca(marca)" class="btn btn-edit">Editar</button>
+          <button (click)="excluirMarca(marca.id, marca.nome)" class="btn btn-delete">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

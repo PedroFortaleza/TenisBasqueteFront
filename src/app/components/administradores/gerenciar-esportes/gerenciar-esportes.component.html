@@ -1,0 +1,109 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Gerenciar Esportes</h1>
+    <p>Cadastre e gerencie os esportes do sistema</p>
+    <button (click)="voltarParaGerenciamento()" class="btn-voltar">← Voltar</button>
+  </div>
+
+  <div class="form-section">
+    <h2>{{ editMode ? 'Editar Esporte' : 'Cadastrar Novo Esporte' }}</h2>
+    
+    <form [formGroup]="esporteForm" (ngSubmit)="onSubmit()" class="entity-form">
+      <div class="form-group">
+        <label for="nome">Nome do Esporte *</label>
+        <input 
+          type="text" 
+          id="nome" 
+          formControlName="nome" 
+          class="form-control" 
+          placeholder="Ex: Basquete, Corrida, Futebol..."
+        >
+        <div *ngIf="nome?.invalid && nome?.touched" class="error-message">
+          Nome é obrigatório e deve ter pelo menos 2 caracteres
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <textarea 
+          id="descricao" 
+          formControlName="descricao" 
+          class="form-control" 
+          rows="3"
+          placeholder="Descrição do esporte..."
+        ></textarea>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input 
+          type="checkbox" 
+          id="ativo" 
+          formControlName="ativo"
+        >
+        <label for="ativo">Esporte ativo</label>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="esporteForm.invalid || isLoading"
+        >
+          {{ editMode ? 'Atualizar Esporte' : 'Cadastrar Esporte' }}
+        </button>
+        
+        <button 
+          *ngIf="editMode" 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="cancelarEdicao()"
+          [disabled]="isLoading"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="mensagem" class="message" [class.success]="!mensagem.includes('Erro')" [class.error]="mensagem.includes('Erro')">
+      {{ mensagem }}
+    </div>
+  </div>
+
+  <!-- Lista de Esportes Cadastrados -->
+  <div class="list-section">
+    <h2>Esportes Cadastrados ({{ esportes.length }})</h2>
+    
+    <div class="id-info">
+      <p><strong>💡 Dica:</strong> Use o ID do esporte ao cadastrar um tênis</p>
+    </div>
+    
+    <div *ngIf="isLoading && esportes.length === 0" class="loading">
+      Carregando esportes...
+    </div>
+
+    <div *ngIf="!isLoading && esportes.length === 0" class="no-data">
+      Nenhum esporte cadastrado.
+    </div>
+
+    <div class="entity-grid" *ngIf="esportes.length > 0">
+      <div *ngFor="let esporte of esportes" class="entity-card">
+        <div class="entity-info">
+          <div class="entity-header">
+            <h3>{{ esporte.nome }}</h3>
+            <span class="entity-id">ID: {{ esporte.id }}</span>
+          </div>
+          <p *ngIf="esporte.descricao" class="descricao">{{ esporte.descricao }}</p>
+          <div class="entity-details">
+            <span class="status" [class.ativo]="esporte.ativo" [class.inativo]="!esporte.ativo">
+              {{ esporte.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </div>
+        </div>
+        <div class="entity-actions">
+          <button (click)="editarEsporte(esporte)" class="btn btn-edit">Editar</button>
+          <button (click)="excluirEsporte(esporte.id, esporte.nome)" class="btn btn-delete">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,22 +1,32 @@
 <div class="home-container">
   <section class="hero-banner">
     <div class="hero-content">
-      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zJlnoIrRrQH2HC0tGl3LNq3HpjP1lh.png" alt="Fortal Logo" class="hero-logo" />
-      <h1 class="hero-title">Bem-vindo à Fortal — Tênis Esportivos de Alta Performance</h1>
+      <h1 class="hero-title">ELEVE SEU DESEMPENHO</h1>
+      <p class="hero-subtitle">Tecnologia e conforto para cada passo da sua jornada</p>
     </div>
   </section>
 
   <section class="featured-products">
-    <h2 class="section-title">Produtos em Destaque</h2>
+    <h2 class="section-title">Modelos em Destaque</h2>
+    
+    <div *ngIf="featuredProducts.length === 0" class="loading">
+      Carregando modelos...
+    </div>
+
     <div class="products-grid">
-      <div class="product-card" *ngFor="let product of featuredProducts">
+      <div class="product-card" *ngFor="let product of featuredProducts" (click)="verDetalhes(product)">
         <div class="product-image">
-          <img [src]="product.image" [alt]="product.name" />
+          <div class="no-image">Imagem</div>
         </div>
         <div class="product-info">
-          <h3 class="product-name">{{ product.name }}</h3>
-          <p class="product-price">{{ product.price | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
-          <button class="btn-view-more">Ver mais</button>
+          <h3 class="product-name">{{ product.nome }}</h3>
+          <p class="product-description">{{ product.descricao }}</p>
+          <p class="product-price">{{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
+          <p class="product-details">
+            <span class="material">{{ product.material }}</span>
+            <span class="genero">{{ product.genero }}</span>
+          </p>
+          <button class="btn-view-more">Ver Detalhes</button>
         </div>
       </div>
     </div>

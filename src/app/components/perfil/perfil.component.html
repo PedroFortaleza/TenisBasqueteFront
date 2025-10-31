@@ -1,0 +1,54 @@
+<div class="perfil-container">
+  <div class="perfil-header">
+    <h1>Meu Perfil</h1>
+    <p>Gerencie sua conta e preferências</p>
+  </div>
+
+  <div class="perfil-content">
+    <div class="user-info-card">
+      <h2>Informações da Conta</h2>
+      
+      <div class="user-details">
+        <div class="info-item">
+          <strong>Nome:</strong> <span>{{ nomeUsuario }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Email:</strong> <span>{{ emailUsuario }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Username:</strong> <span>{{ usernameUsuario }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Tipo:</strong> 
+          <span class="user-type" [class.admin]="isAdmin">
+            {{ isAdmin ? 'Administrador' : 'Usuário' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Área do Administrador -->
+      <div *ngIf="isAdmin" class="admin-section">
+        <h3>Painel Administrativo</h3>
+        <p>Bem-vindo, <strong>{{ nomeUsuario }}</strong>! Você tem acesso total ao sistema.</p>
+        
+        <div class="admin-actions">
+          <button (click)="irParaCadastroTenis()" class="btn-admin">
+            Gerenciar Tênis
+          </button>
+          <button (click)="irParaGerenciamentoGeral()" class="btn-admin">
+            Gerenciamento Geral
+          </button>
+          <button class="btn-admin" disabled>
+            Gerenciar Usuários
+          </button>
+        </div>
+      </div>
+
+      <div class="account-actions">
+        <button (click)="logout()" class="btn-logout">
+          Sair da Conta
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

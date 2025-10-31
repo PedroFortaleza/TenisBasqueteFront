@@ -1,0 +1,116 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Gerenciar Cores</h1>
+    <p>Cadastre e gerencie as cores do sistema</p>
+    <button (click)="voltarParaGerenciamento()" class="btn-voltar">← Voltar</button>
+  </div>
+
+  <div class="form-section">
+    <h2>{{ editMode ? 'Editar Cor' : 'Cadastrar Nova Cor' }}</h2>
+    
+    <form [formGroup]="corForm" (ngSubmit)="onSubmit()" class="entity-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nome">Nome da Cor *</label>
+          <input 
+            type="text" 
+            id="nome" 
+            formControlName="nome" 
+            class="form-control" 
+            placeholder="Ex: Preto, Branco, Vermelho..."
+          >
+          <div *ngIf="nome?.invalid && nome?.touched" class="error-message">
+            Nome é obrigatório e deve ter pelo menos 2 caracteres
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="codigoHex">Código Hexadecimal *</label>
+          <input 
+            type="text" 
+            id="codigoHex" 
+            formControlName="codigoHex" 
+            class="form-control" 
+            placeholder="Ex: #000000"
+          >
+          <div *ngIf="codigoHex?.invalid && codigoHex?.touched" class="error-message">
+            Código hexadecimal inválido (ex: #FF0000)
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input 
+          type="checkbox" 
+          id="ativo" 
+          formControlName="ativo"
+        >
+        <label for="ativo">Cor ativa</label>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="corForm.invalid || isLoading"
+        >
+          {{ editMode ? 'Atualizar Cor' : 'Cadastrar Cor' }}
+        </button>
+        
+        <button 
+          *ngIf="editMode" 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="cancelarEdicao()"
+          [disabled]="isLoading"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="mensagem" class="message" [class.success]="!mensagem.includes('Erro')" [class.error]="mensagem.includes('Erro')">
+      {{ mensagem }}
+    </div>
+  </div>
+
+  <!-- Lista de Cores Cadastradas -->
+  <div class="list-section">
+    <h2>Cores Cadastradas ({{ cores.length }})</h2>
+    
+    <div class="id-info">
+      <p><strong>💡 Dica:</strong> Use o ID da cor ao cadastrar um tênis</p>
+    </div>
+    
+    <div *ngIf="isLoading && cores.length === 0" class="loading">
+      Carregando cores...
+    </div>
+
+    <div *ngIf="!isLoading && cores.length === 0" class="no-data">
+      Nenhuma cor cadastrada.
+    </div>
+
+    <div class="entity-grid" *ngIf="cores.length > 0">
+      <div *ngFor="let cor of cores" class="entity-card">
+        <div class="entity-info">
+          <div class="entity-header">
+            <h3>{{ cor.nome }}</h3>
+            <span class="entity-id">ID: {{ cor.id }}</span>
+          </div>
+          <div class="entity-details">
+            <span class="codigo-hex" [style.background-color]="cor.codigoHex" [style.color]="getContrastColor(cor.codigoHex)">
+              {{ cor.codigoHex }}
+            </span>
+            <span class="status" [class.ativo]="cor.ativo" [class.inativo]="!cor.ativo">
+              {{ cor.ativo ? 'Ativa' : 'Inativa' }}
+            </span>
+          </div>
+        </div>
+        <div class="entity-actions">
+          <button (click)="editarCor(cor)" class="btn btn-edit">Editar</button>
+          <button (click)="excluirCor(cor.id!, cor.nome)" class="btn btn-delete">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

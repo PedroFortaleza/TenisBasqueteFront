@@ -3,12 +3,39 @@
     <div class="logo">
       <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zJlnoIrRrQH2HC0tGl3LNq3HpjP1lh.png" alt="Fortal Logo" />
     </div>
+    
+    <div class="search-container">
+      <input 
+        type="text" 
+        placeholder="Pesquisar modelos..." 
+        class="search-input"
+        [(ngModel)]="termoPesquisa"
+        (keyup.enter)="pesquisar()">
+      <button class="search-button" (click)="pesquisar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+      </button>
+    </div>
+
     <nav class="nav-menu">
       <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Início</a>
-      <a routerLink="/modelo" routerLinkActive="active">Modelo</a>
-      <a routerLink="/marca" routerLinkActive="active">Marca</a>
       <a routerLink="/esporte" routerLinkActive="active">Esporte</a>
-      <a routerLink="/carrinho" routerLinkActive="active">Carrinho</a>
+      
+      <div class="dropdown-conta">
+        <!-- Mostra "Login" quando não logado, ou nome do usuário quando logado -->
+        <a *ngIf="!usuario" routerLink="/login" class="account-link">Login</a>
+        <a *ngIf="usuario" routerLink="/perfil" class="account-link">
+          {{ usuario.nome }}
+        </a>
+        
+        <!-- Dropdown menu (só aparece quando logado) -->
+        <div *ngIf="usuario" class="dropdown-menu">
+          <a routerLink="/perfil">Perfil</a>
+          <a routerLink="/carrinho">Carrinho</a>
+          <a (click)="logout()" class="logout-link">Sair</a>
+        </div>
+      </div>
     </nav>
   </div>
 </header>

@@ -1,0 +1,154 @@
+.perfil-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  font-family: 'Montserrat Arabic', sans-serif;
+}
+
+.perfil-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #234859 0%, #1a3642 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.perfil-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.perfil-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+.user-info-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-info-card h2 {
+  color: #234859;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.user-details {
+  margin-bottom: 2rem;
+}
+
+.info-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-item strong {
+  color: #234859;
+}
+
+.user-type {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.user-type.admin {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.admin-section {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 6px;
+  margin: 2rem 0;
+  border-left: 4px solid #234859;
+}
+
+.admin-section h3 {
+  color: #234859;
+  margin: 0 0 0.5rem 0;
+}
+
+.admin-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-admin {
+  padding: 1rem;
+  background-color: #234859;
+  color: #C6D3D9;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Montserrat Arabic', sans-serif;
+}
+
+.btn-admin:hover:not(:disabled) {
+  background-color: #1a3642;
+  transform: translateY(-2px);
+}
+
+.btn-admin:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.account-actions {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.btn-logout {
+  padding: 0.75rem 1.5rem;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Montserrat Arabic', sans-serif;
+}
+
+.btn-logout:hover {
+  background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+  .perfil-container {
+    padding: 0 1rem;
+  }
+
+  .perfil-header h1 {
+    font-size: 2rem;
+  }
+
+  .admin-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .user-info-card {
+    padding: 1.5rem;
+  }
+}

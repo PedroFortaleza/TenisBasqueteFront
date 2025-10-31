@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cor } from '../models/cor.model';
 
+export type { Cor }; // ← ADICIONAR ESTA LINHA
+
 @Injectable({
   providedIn: 'root'
 })

@@ -1,0 +1,75 @@
+<div class="gerenciamento-container">
+  <div class="gerenciamento-header">
+    <h1>Gerenciamento Geral</h1>
+    <p>Gerencie todas as entidades do sistema</p>
+    <button (click)="voltarParaPerfil()" class="btn-voltar">← Voltar ao Perfil</button>
+  </div>
+
+  <div class="gerenciamento-grid">
+    <!-- Gerenciar Marcas -->
+    <div class="gerenciamento-card" (click)="gerenciarMarcas()">
+      <div class="card-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+          <line x1="7" y1="7" x2="7.01" y2="7"/>
+        </svg>
+      </div>
+      <h3>Marcas</h3>
+      <p>Cadastre e gerencie as marcas de tênis disponíveis no sistema</p>
+      <div class="card-actions">
+        <span class="card-status">Gerenciar</span>
+      </div>
+    </div>
+
+    <!-- Gerenciar Modelos -->
+    <div class="gerenciamento-card" (click)="gerenciarModelos()">
+      <div class="card-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14,2 14,8 20,8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10,9 9,9 8,9"/>
+        </svg>
+      </div>
+      <h3>Modelos</h3>
+      <p>Gerencie os modelos de tênis e suas especificações</p>
+      <div class="card-actions">
+        <span class="card-status">Gerenciar</span>
+      </div>
+    </div>
+
+    <!-- Gerenciar Cores -->
+    <div class="gerenciamento-card" (click)="gerenciarCores()">
+      <div class="card-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+      </div>
+      <h3>Cores</h3>
+      <p>Adicione e gerencie as cores disponíveis para os tênis</p>
+      <div class="card-actions">
+        <span class="card-status">Gerenciar</span>
+      </div>
+    </div>
+
+    <!-- Gerenciar Esportes -->
+    <div class="gerenciamento-card" (click)="gerenciarEsportes()">
+      <div class="card-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </div>
+      <h3>Esportes</h3>
+      <p>Gerencie as categorias esportivas dos produtos</p>
+      <div class="card-actions">
+        <span class="card-status">Gerenciar</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="gerenciamento-footer">
+    <p><strong>Administrador:</strong> Painel de controle completo do sistema</p>
+  </div>
+</div>

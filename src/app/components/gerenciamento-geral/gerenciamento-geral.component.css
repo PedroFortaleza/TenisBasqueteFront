@@ -1,0 +1,147 @@
+.gerenciamento-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  font-family: 'Montserrat Arabic', sans-serif;
+}
+
+.gerenciamento-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #234859 0%, #1a3642 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  position: relative;
+}
+
+.gerenciamento-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.gerenciamento-header p {
+  margin: 0 0 1rem 0;
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+.btn-voltar {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Montserrat Arabic', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.btn-voltar:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.gerenciamento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.gerenciamento-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.gerenciamento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #234859;
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.gerenciamento-card h3 {
+  color: #234859;
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.gerenciamento-card p {
+  color: #6c757d;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.card-status {
+  background-color: #234859;
+  color: #C6D3D9;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.gerenciamento-footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #234859;
+}
+
+.gerenciamento-footer p {
+  margin: 0;
+  color: #234859;
+}
+
+@media (max-width: 768px) {
+  .gerenciamento-container {
+    padding: 0 1rem;
+  }
+
+  .gerenciamento-header h1 {
+    font-size: 2rem;
+  }
+
+  .gerenciamento-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .btn-voltar {
+    position: static;
+    margin-bottom: 1rem;
+  }
+  .card-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  color: #234859;
+}
+}

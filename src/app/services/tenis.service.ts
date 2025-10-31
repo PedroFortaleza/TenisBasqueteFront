@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Tenis } from '../models/tenis.model';
 
+export type { Tenis }; // ← ADICIONAR ESTA LINHA
+
 @Injectable({
   providedIn: 'root'
 })

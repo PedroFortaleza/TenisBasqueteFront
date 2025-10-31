@@ -1,32 +1,46 @@
 .home-container {
   width: 100%;
+  font-family: 'Montserrat Arabic', sans-serif;
 }
 
 .hero-banner {
-  background: linear-gradient(135deg, #234859 0%, #1a3642 100%);
-  padding: 4rem 2rem;
+  background: linear-gradient(135deg, rgba(35, 72, 89, 0.85) 0%, rgba(26, 54, 66, 0.85) 100%),
+              url('https://images.unsplash.com/photo-1491553895911-0055eca6402d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 8rem 2rem;
   text-align: center;
-  color: #C6D3D9;
+  color: #ffffff;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-content {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-.hero-logo {
-  max-width: 400px;
-  width: 100%;
-  height: auto;
-  margin-bottom: 2rem;
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 1.5rem 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-family: 'Montserrat Arabic', sans-serif;
+  letter-spacing: 1px;
 }
 
-.hero-title {
-  font-size: 2rem;
-  font-weight: 700;
+.hero-subtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
   color: #C6D3D9;
   margin: 0;
-  line-height: 1.4;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-family: 'Montserrat Arabic', sans-serif;
+  line-height: 1.6;
 }
 
 .featured-products {
@@ -36,11 +50,12 @@
 }
 
 .section-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #234859;
   text-align: center;
   margin-bottom: 3rem;
+  font-family: 'Montserrat Arabic', sans-serif;
 }
 
 .products-grid {
@@ -55,6 +70,7 @@
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Montserrat Arabic', sans-serif;
 }
 
 .product-card:hover {
@@ -87,6 +103,7 @@
   font-weight: 600;
   color: #000000;
   margin: 0 0 0.5rem 0;
+  font-family: 'Montserrat Arabic', sans-serif;
 }
 
 .product-price {
@@ -94,6 +111,7 @@
   font-weight: 700;
   color: #234859;
   margin: 0 0 1rem 0;
+  font-family: 'Montserrat Arabic', sans-serif;
 }
 
 .btn-view-more {
@@ -107,6 +125,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: 'Montserrat Arabic', sans-serif;
 }
 
 .btn-view-more:hover {
@@ -119,6 +138,7 @@
   text-align: center;
   padding: 2rem;
   margin-top: 4rem;
+  font-family: 'Montserrat Arabic', sans-serif;
 }
 
 .footer p {
@@ -127,16 +147,21 @@
 }
 
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 1.5rem;
+  .hero-banner {
+    padding: 4rem 1rem;
+    min-height: 50vh;
   }
 
-  .hero-logo {
-    max-width: 280px;
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
   }
 
   .section-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 
   .products-grid {

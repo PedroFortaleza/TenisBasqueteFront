@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Marca } from '../models/marca.model';
 
+export type { Marca }; // ← USAR export type em vez de export
+
 @Injectable({
   providedIn: 'root'
 })

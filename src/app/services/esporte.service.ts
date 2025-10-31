@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Esporte } from '../models/esporte.model';
 
+export type { Esporte }; // ← ADICIONAR ESTA LINHA
+
 @Injectable({
   providedIn: 'root'
 })

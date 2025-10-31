@@ -1,0 +1,97 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Gerenciar Modelos</h1>
+    <p>Cadastre e gerencie os modelos/categorias de tênis</p>
+    <button (click)="voltarParaGerenciamento()" class="btn-voltar">← Voltar</button>
+  </div>
+
+  <div class="form-section">
+    <h2>{{ editMode ? 'Editar Modelo' : 'Cadastrar Novo Modelo' }}</h2>
+    
+    <form [formGroup]="modeloForm" (ngSubmit)="onSubmit()" class="entity-form">
+      <div class="form-group">
+        <label for="nome">Nome do Modelo *</label>
+        <input 
+          type="text" 
+          id="nome" 
+          formControlName="nome" 
+          class="form-control" 
+          placeholder="Ex: Casual, Esportivo, Corrida, Basquete..."
+        >
+        <div *ngIf="nome?.invalid && nome?.touched" class="error-message">
+          Nome é obrigatório e deve ter pelo menos 2 caracteres
+        </div>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <input 
+          type="checkbox" 
+          id="ativo" 
+          formControlName="ativo"
+        >
+        <label for="ativo">Modelo ativo</label>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="modeloForm.invalid || isLoading"
+        >
+          {{ editMode ? 'Atualizar Modelo' : 'Cadastrar Modelo' }}
+        </button>
+        
+        <button 
+          *ngIf="editMode" 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="cancelarEdicao()"
+          [disabled]="isLoading"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="mensagem" class="message" [class.success]="!mensagem.includes('Erro')" [class.error]="mensagem.includes('Erro')">
+      {{ mensagem }}
+    </div>
+  </div>
+
+  <!-- Lista de Modelos Cadastrados -->
+  <div class="list-section">
+    <h2>Modelos Cadastrados ({{ modelos.length }})</h2>
+    
+    <div class="id-info">
+      <p><strong>💡 Dica:</strong> Use o ID do modelo ao cadastrar um tênis</p>
+    </div>
+    
+    <div *ngIf="isLoading && modelos.length === 0" class="loading">
+      Carregando modelos...
+    </div>
+
+    <div *ngIf="!isLoading && modelos.length === 0" class="no-data">
+      Nenhum modelo cadastrado.
+    </div>
+
+    <div class="entity-grid" *ngIf="modelos.length > 0">
+      <div *ngFor="let modelo of modelos" class="entity-card">
+        <div class="entity-info">
+          <div class="entity-header">
+            <h3>{{ modelo.nome }}</h3>
+            <span class="entity-id">ID: {{ modelo.id }}</span>
+          </div>
+          <div class="entity-details">
+            <span class="status" [class.ativo]="modelo.ativo" [class.inativo]="!modelo.ativo">
+              {{ modelo.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </div>
+        </div>
+        <div class="entity-actions">
+          <button (click)="editarModelo(modelo)" class="btn btn-edit">Editar</button>
+          <button (click)="excluirModelo(modelo.id!, modelo.nome)" class="btn btn-delete">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

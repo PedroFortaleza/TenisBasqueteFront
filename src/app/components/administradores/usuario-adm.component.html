@@ -1,0 +1,165 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Painel Administrativo - Gerenciar Tênis</h1>
+    <p>Cadastre, edite e gerencie os produtos da loja</p>
+  </div>
+
+  <!-- Dica sobre IDs -->
+  <div class="form-info">
+    <p><strong>Dica:</strong> Consulte os IDs no Gerenciamento Geral</p>
+    <button type="button" (click)="irParaGerenciamentoGeral()" class="btn-info">
+      Ver IDs no Gerenciamento Geral
+    </button>
+  </div>
+
+  <!-- Formulário de Cadastro/Edição -->
+  <div class="form-section">
+    <h2>{{ editMode ? 'Editar Tênis' : 'Cadastrar Novo Tênis' }}</h2>
+    
+    <form [formGroup]="tenisForm" (ngSubmit)="onSubmit()" class="tenis-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nome">Nome do Tênis *</label>
+          <input type="text" id="nome" formControlName="nome" class="form-control">
+          <div *ngIf="nome?.invalid && nome?.touched" class="error-message">
+            <span *ngIf="nome?.errors?.['required']">Nome é obrigatório</span>
+            <span *ngIf="nome?.errors?.['minlength']">Mínimo 3 caracteres</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="preco">Preço (R$) *</label>
+          <input type="number" id="preco" formControlName="preco" step="0.01" min="0" class="form-control">
+          <div *ngIf="preco?.invalid && preco?.touched" class="error-message">
+            <span *ngIf="preco?.errors?.['required']">Preço é obrigatório</span>
+            <span *ngIf="preco?.errors?.['min']">Preço deve ser maior que zero</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="descricao">Descrição *</label>
+        <textarea id="descricao" formControlName="descricao" rows="3" class="form-control"></textarea>
+        <div *ngIf="descricao?.invalid && descricao?.touched" class="error-message">
+          <span *ngIf="descricao?.errors?.['required']">Descrição é obrigatória</span>
+          <span *ngIf="descricao?.errors?.['minlength']">Mínimo 10 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="genero">Gênero *</label>
+          <select id="genero" formControlName="genero" class="form-control">
+            <option value="MASCULINO">Masculino</option>
+            <option value="FEMININO">Feminino</option>
+            <option value="UNISSEX">Unissex</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="material">Material *</label>
+          <input type="text" id="material" formControlName="material" class="form-control">
+          <div *ngIf="material?.invalid && material?.touched" class="error-message">
+            <span *ngIf="material?.errors?.['required']">Material é obrigatório</span>
+            <span *ngIf="material?.errors?.['minlength']">Mínimo 3 caracteres</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="marcaId">ID da Marca *</label>
+          <input type="number" id="marcaId" formControlName="marcaId" min="1" class="form-control">
+          <div *ngIf="marcaId?.invalid && marcaId?.touched" class="error-message">
+            ID da marca é obrigatório
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="modeloId">ID do Modelo *</label>
+          <input type="number" id="modeloId" formControlName="modeloId" min="1" class="form-control">
+          <div *ngIf="modeloId?.invalid && modeloId?.touched" class="error-message">
+            ID do modelo é obrigatório
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="esporteId">ID do Esporte *</label>
+          <input type="number" id="esporteId" formControlName="esporteId" min="1" class="form-control">
+          <div *ngIf="esporteId?.invalid && esporteId?.touched" class="error-message">
+            ID do esporte é obrigatório
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="corId">ID da Cor *</label>
+          <input type="number" id="corId" formControlName="corId" min="1" class="form-control">
+          <div *ngIf="corId?.invalid && corId?.touched" class="error-message">
+            ID da cor é obrigatório
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="ativo">
+          <span class="checkmark"></span>
+          Produto ativo
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="tenisForm.invalid || isLoading" class="btn btn-primary">
+          {{ isLoading ? 'Salvando...' : (editMode ? 'Atualizar Tênis' : 'Cadastrar Tênis') }}
+        </button>
+        
+        <button *ngIf="editMode" type="button" (click)="cancelarEdicao()" class="btn btn-secondary">
+          Cancelar Edição
+        </button>
+      </div>
+    </form>
+
+    <!-- Mensagem de feedback -->
+    <div *ngIf="mensagem" class="message" [class.success]="!mensagem.includes('Erro')" [class.error]="mensagem.includes('Erro')">
+      {{ mensagem }}
+    </div>
+  </div>
+
+  <!-- Lista de Tênis Cadastrados -->
+  <div class="list-section">
+    <h2>Tênis Cadastrados ({{ tenisList.length }})</h2>
+    
+    <div *ngIf="isLoading && tenisList.length === 0" class="loading">
+      Carregando tênis...
+    </div>
+
+    <div *ngIf="!isLoading && tenisList.length === 0" class="no-data">
+      Nenhum tênis cadastrado.
+    </div>
+
+    <div class="tenis-grid" *ngIf="tenisList.length > 0">
+      <div *ngFor="let tenis of tenisList" class="tenis-card">
+        <div class="tenis-info">
+          <h3>{{ tenis.nome }}</h3>
+          <p class="descricao">{{ tenis.descricao }}</p>
+          <div class="tenis-details">
+            <span class="preco">{{ tenis.preco | currency:'BRL' }}</span>
+            <span class="genero">{{ tenis.genero }}</span>
+            <span class="status" [class.ativo]="tenis.ativo" [class.inativo]="!tenis.ativo">
+              {{ tenis.ativo ? 'Ativo' : 'Inativo' }}
+            </span>
+          </div>
+          <div class="ids-info">
+            <small>Marca: {{ tenis.marcaId }} | Modelo: {{ tenis.modeloId }} | Esporte: {{ tenis.esporteId }} | Cor: {{ tenis.corId }}</small>
+          </div>
+        </div>
+        <div class="tenis-actions">
+          <button (click)="editarTenis(tenis)" class="btn btn-edit">Editar</button>
+          <button (click)="excluirTenis(tenis.id, tenis.nome)" class="btn btn-delete">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
