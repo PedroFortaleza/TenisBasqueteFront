@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
-import { MarcaService } from '../../../services/marca.service';
-import { Marca } from '../../../models/marca.model';
+import { AuthService } from '../../services/auth.service';
+import { MarcaService } from '../../services/marca.service';
+import { Marca } from '../../models/marca.model';
 
 @Component({
   selector: 'app-gerenciar-marcas',

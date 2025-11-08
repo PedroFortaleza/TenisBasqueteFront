@@ -2,24 +2,23 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { EsporteComponent } from './components/esporte/esporte.component';
 import { CarrinhoComponent } from './components/carrinho/carrinho.component';
-import { UsuarioAdmComponent } from './components/administradores/usuario-adm.component';
 import { TenisComponent } from './components/tenis/tenis.component';
 import { PesquisaComponent } from './components/pesquisa/pesquisa.component';
 import { LoginComponent } from './components/login/login.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { GerenciamentoGeralComponent } from './components/gerenciamento-geral/gerenciamento-geral.component';
-import { GerenciarMarcasComponent } from './components/administradores/gerenciar-marcas/gerenciar-marcas.component';
-import { GerenciarModelosComponent } from './components/administradores/gerenciar-modelos/gerenciar-modelos.component';
-import { GerenciarCoresComponent } from './components/administradores/gerenciar-cores/gerenciar-cores.component';
-import { GerenciarEsportesComponent } from './components/administradores/gerenciar-esportes/gerenciar-esportes.component';
+import { GerenciarMarcasComponent } from './components/gerenciar-marcas/gerenciar-marcas.component';
+import { GerenciarModelosComponent } from './components/gerenciar-modelos/gerenciar-modelos.component';
+import { GerenciarCoresComponent } from './components/gerenciar-cores/gerenciar-cores.component';
+import { GerenciarEsportesComponent } from './components/gerenciar-esportes/gerenciar-esportes.component';
+import { GerenciarTenisComponent } from './components/gerenciar-tenis/gerenciar-tenis.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'esporte', component: EsporteComponent },
   { path: 'carrinho', component: CarrinhoComponent },
-  { path: 'UsuarioAdm', component: UsuarioAdmComponent },
-  { path: 'tenis', component: TenisComponent },
+  { path: 'tenis/:id', component: TenisComponent }, // ← COM PARÂMETRO ID
   { path: 'pesquisa', component: PesquisaComponent },
   { path: 'login', component: LoginComponent },
   { path: 'perfil', component: PerfilComponent },
@@ -28,5 +27,6 @@ export const routes: Routes = [
   { path: 'gerenciar-modelos', component: GerenciarModelosComponent },
   { path: 'gerenciar-cores', component: GerenciarCoresComponent },
   { path: 'gerenciar-esportes', component: GerenciarEsportesComponent },
+  { path: 'gerenciar-tenis', component: GerenciarTenisComponent }, 
   { path: '**', redirectTo: 'home' }
 ];

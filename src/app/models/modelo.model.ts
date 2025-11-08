@@ -1,8 +1,9 @@
 export interface Modelo {
-  id: number;
+  id?: number;
   nome: string;
   tamanho: string;
   preco: number;
   cor: string;
   emEstoque: boolean;
+  ativo?: boolean; 
 }

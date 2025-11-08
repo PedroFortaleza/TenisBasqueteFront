@@ -131,6 +131,113 @@
   font-weight: normal;
 }
 
+/* ESTILOS PARA OS TAMANHOS */
+.tamanhos-container {
+  margin-top: 0.5rem;
+}
+
+.tamanhos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tamanho-option {
+  display: flex;
+  align-items: center;
+}
+
+.tamanho-option .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-weight: normal;
+}
+
+.tamanho-option .checkbox-label:hover {
+  border-color: #234859;
+  background-color: #f8f9fa;
+}
+
+.tamanho-option input[type="checkbox"]:checked + .checkmark {
+  background-color: #234859;
+  border-color: #234859;
+}
+
+.tamanho-option input[type="checkbox"]:checked + .checkmark::after {
+  content: "✓";
+  color: white;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  line-height: 1;
+}
+
+.tamanhos-selecionados {
+  background-color: #e9ecef;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.tamanhos-lista {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+/* Ajustes para o checkmark personalizado */
+.checkbox-label {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1.25rem;
+  width: 1.25rem;
+  background-color: #fff;
+  border: 2px solid #e1e5e9;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.checkbox-label:hover input[type="checkbox"] ~ .checkmark {
+  border-color: #234859;
+}
+
+.checkbox-label input[type="checkbox"]:checked ~ .checkmark {
+  background-color: #234859;
+  border-color: #234859;
+}
+
+.checkbox-label input[type="checkbox"]:checked ~ .checkmark::after {
+  content: "✓";
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+}
+
 .form-actions {
   display: flex;
   gap: 1rem;
@@ -303,6 +410,7 @@
   gap: 0.5rem;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .admin-container {
     padding: 0 1rem;
@@ -333,5 +441,9 @@
 
   .tenis-details {
     flex-wrap: wrap;
+  }
+
+  .tamanhos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
   }
 }

@@ -9,23 +9,30 @@
   <section class="featured-products">
     <h2 class="section-title">Modelos em Destaque</h2>
     
-    <div *ngIf="featuredProducts.length === 0" class="loading">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading">
       Carregando modelos...
     </div>
 
-    <div class="products-grid">
+    <!-- No Products State -->
+    <div *ngIf="!isLoading && featuredProducts.length === 0" class="no-products">
+      <p>Nenhum produto disponível no momento.</p>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" *ngIf="!isLoading && featuredProducts.length > 0">
       <div class="product-card" *ngFor="let product of featuredProducts" (click)="verDetalhes(product)">
         <div class="product-image">
           <div class="no-image">Imagem</div>
         </div>
         <div class="product-info">
           <h3 class="product-name">{{ product.nome }}</h3>
-          <p class="product-description">{{ product.descricao }}</p>
+          <p class="product-description">{{ product.descricao | slice:0:100 }}...</p>
           <p class="product-price">{{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
-          <p class="product-details">
+          <div class="product-details">
             <span class="material">{{ product.material }}</span>
             <span class="genero">{{ product.genero }}</span>
-          </p>
+          </div>
           <button class="btn-view-more">Ver Detalhes</button>
         </div>
       </div>

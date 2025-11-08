@@ -13,31 +13,37 @@ import { Tenis } from '../../models/tenis.model';
 })
 export class HomeComponent implements OnInit {
   featuredProducts: Tenis[] = [];
+  isLoading: boolean = true;
 
   constructor(
     private tenisService: TenisService,
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.carregarTenis();
+  ngOnInit(): void {
+    this.carregarProdutosDestaque();
   }
 
-  carregarTenis(): void {
-    this.tenisService.getAll().subscribe({
-      next: (tenis) => {
-        this.featuredProducts = tenis;
+  carregarProdutosDestaque(): void {
+    this.isLoading = true;
+    
+    // Use getAtivos() para carregar apenas tênis ativos
+    this.tenisService.getAtivos().subscribe({
+      next: (tenis: Tenis[]) => {
+        // Filtrar apenas produtos ativos (segurança extra)
+        this.featuredProducts = tenis.filter(produto => produto.ativo === true);
+        this.isLoading = false;
       },
-      error: (error) => {
-        console.error('Erro ao carregar tênis:', error);
-        // Pode adicionar dados mock aqui se quiser
+      error: (error: any) => {
+        console.error('Erro ao carregar produtos:', error);
+        this.featuredProducts = [];
+        this.isLoading = false;
       }
     });
   }
 
-  verDetalhes(tenis: Tenis): void {
-    this.router.navigate(['/tenis'], { 
-      state: { tenis: tenis } 
-    });
+  verDetalhes(product: Tenis): void {
+    // Navega para o componente tenis passando o ID como parâmetro
+    this.router.navigate(['/tenis', product.id]);
   }
 }

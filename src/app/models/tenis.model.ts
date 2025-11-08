@@ -5,6 +5,7 @@ export interface Tenis {
   preco: number;
   genero: string;
   material: string;
+  tamanhos: string[]; 
   ativo: boolean;
   marcaId: number;
   modeloId: number;

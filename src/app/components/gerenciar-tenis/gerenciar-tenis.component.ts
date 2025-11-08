@@ -6,19 +6,23 @@ import { TenisService } from '../../services/tenis.service';
 import { Tenis } from '../../models/tenis.model';
 
 @Component({
-  selector: 'app-usuario-adm',
+  selector: 'app-gerenciar-tenis',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './usuario-adm.component.html',
-  styleUrls: ['./usuario-adm.component.css']
+  templateUrl: './gerenciar-tenis.component.html',
+  styleUrls: ['./gerenciar-tenis.component.css']
 })
-export class UsuarioAdmComponent implements OnInit {
+export class GerenciarTenisComponent implements OnInit {
   tenisForm: FormGroup;
   tenisList: Tenis[] = [];
   mensagem: string = '';
   isLoading: boolean = false;
   editMode: boolean = false;
   tenisEditId: number | null = null;
+  
+  // Tamanhos disponíveis
+  tamanhosDisponiveis: string[] = ['34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'];
+  tamanhosSelecionados: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +43,7 @@ export class UsuarioAdmComponent implements OnInit {
       preco: [0, [Validators.required, Validators.min(0.01)]],
       genero: ['MASCULINO', Validators.required],
       material: ['', [Validators.required, Validators.minLength(3)]],
+      tamanhos: [[], [Validators.required, Validators.minLength(1)]],
       ativo: [true],
       marcaId: [0, [Validators.required, Validators.min(1)]],
       modeloId: [0, [Validators.required, Validators.min(1)]],
@@ -62,8 +67,31 @@ export class UsuarioAdmComponent implements OnInit {
     });
   }
 
+  // Método para lidar com a seleção/deseleção de tamanhos
+  onTamanhoChange(event: any): void {
+    const tamanho = event.target.value;
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      this.tamanhosSelecionados.push(tamanho);
+    } else {
+      this.tamanhosSelecionados = this.tamanhosSelecionados.filter(t => t !== tamanho);
+    }
+
+    // Ordenar os tamanhos numericamente
+    this.tamanhosSelecionados.sort((a, b) => parseInt(a) - parseInt(b));
+    
+    // Atualizar o valor do form control
+    this.tenisForm.patchValue({
+      tamanhos: this.tamanhosSelecionados
+    });
+    
+    // Marcar como tocado para validação
+    this.tenisForm.get('tamanhos')?.markAsTouched();
+  }
+
   onSubmit(): void {
-    if (this.tenisForm.valid) {
+    if (this.tenisForm.valid && this.tamanhosSelecionados.length > 0) {
       this.isLoading = true;
       const tenisData: Tenis = this.tenisForm.value;
 
@@ -96,13 +124,24 @@ export class UsuarioAdmComponent implements OnInit {
       }
     } else {
       this.marcarCamposComoSujos();
+      if (this.tamanhosSelecionados.length === 0) {
+        this.mensagem = 'Selecione pelo menos um tamanho disponível.';
+      }
     }
   }
 
   editarTenis(tenis: Tenis): void {
     this.editMode = true;
     this.tenisEditId = tenis.id;
-    this.tenisForm.patchValue(tenis);
+    
+    // Preencher os tamanhos selecionados
+    this.tamanhosSelecionados = tenis.tamanhos || [];
+    
+    this.tenisForm.patchValue({
+      ...tenis,
+      tamanhos: this.tamanhosSelecionados
+    });
+    
     window.scrollTo(0, 0);
   }
 
@@ -123,16 +162,19 @@ export class UsuarioAdmComponent implements OnInit {
   cancelarEdicao(): void {
     this.editMode = false;
     this.tenisEditId = null;
+    this.tamanhosSelecionados = [];
     this.resetForm();
   }
 
   resetForm(): void {
+    this.tamanhosSelecionados = [];
     this.tenisForm.reset({
       nome: '',
       descricao: '',
       preco: 0,
       genero: 'MASCULINO',
       material: '',
+      tamanhos: [],
       ativo: true,
       marcaId: 0,
       modeloId: 0,
@@ -158,6 +200,7 @@ export class UsuarioAdmComponent implements OnInit {
   get descricao() { return this.tenisForm.get('descricao'); }
   get preco() { return this.tenisForm.get('preco'); }
   get material() { return this.tenisForm.get('material'); }
+  get tamanhos() { return this.tenisForm.get('tamanhos'); }
   get marcaId() { return this.tenisForm.get('marcaId'); }
   get modeloId() { return this.tenisForm.get('modeloId'); }
   get esporteId() { return this.tenisForm.get('esporteId'); }

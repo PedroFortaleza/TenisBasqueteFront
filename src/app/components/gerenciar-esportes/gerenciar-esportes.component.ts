@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
-import { EsporteService } from '../../../services/esporte.service';
-import { Esporte } from '../../../models/esporte.model';
+import { AuthService } from '../../services/auth.service';
+import { EsporteService } from '../../services/esporte.service';
+import { Esporte } from '../../models/esporte.model';
 
 @Component({
   selector: 'app-gerenciar-esportes',

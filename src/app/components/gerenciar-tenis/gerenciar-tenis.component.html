@@ -66,6 +66,32 @@
         </div>
       </div>
 
+      <!-- SEÇÃO: TAMANHOS DISPONÍVEIS -->
+      <div class="form-group">
+        <label>Tamanhos Disponíveis *</label>
+        <div class="tamanhos-container">
+          <div class="tamanhos-grid">
+            <div *ngFor="let tamanho of tamanhosDisponiveis" class="tamanho-option">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  [value]="tamanho"
+                  (change)="onTamanhoChange($event)"
+                  [checked]="tamanhosSelecionados.includes(tamanho)">
+                <span class="checkmark"></span>
+                {{ tamanho }}
+              </label>
+            </div>
+          </div>
+          <div *ngIf="tamanhos?.invalid && tamanhos?.touched" class="error-message">
+            Selecione pelo menos um tamanho
+          </div>
+          <div class="tamanhos-selecionados" *ngIf="tamanhosSelecionados.length > 0">
+            <strong>Tamanhos selecionados:</strong> {{ tamanhosSelecionados.join(', ') }}
+          </div>
+        </div>
+      </div>
+
       <div class="form-row">
         <div class="form-group">
           <label for="marcaId">ID da Marca *</label>
@@ -150,6 +176,10 @@
             <span class="status" [class.ativo]="tenis.ativo" [class.inativo]="!tenis.ativo">
               {{ tenis.ativo ? 'Ativo' : 'Inativo' }}
             </span>
+          </div>
+          <!-- EXIBIR TAMANHOS NA LISTA -->
+          <div class="tamanhos-lista" *ngIf="tenis.tamanhos && tenis.tamanhos.length > 0">
+            <strong>Tamanhos:</strong> {{ tenis.tamanhos.join(', ') }}
           </div>
           <div class="ids-info">
             <small>Marca: {{ tenis.marcaId }} | Modelo: {{ tenis.modeloId }} | Esporte: {{ tenis.esporteId }} | Cor: {{ tenis.corId }}</small>

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
-import { ModeloService } from '../../../services/modelo.service';
-import { Modelo } from '../../../models/modelo.model';
+import { AuthService } from '../../services/auth.service';
+import { ModeloService } from '../../services/modelo.service';
+import { Modelo } from '../../models/modelo.model';
 
 interface ModeloSimples {
   id?: number;
@@ -75,10 +75,14 @@ export class GerenciarModelosComponent implements OnInit {
     modelosCompletos.forEach(modelo => {
       if (!nomesUnicos.has(modelo.nome)) {
         nomesUnicos.add(modelo.nome);
+        
+        // CORREÇÃO: Usar a propriedade 'ativo' se existir, senão usar 'emEstoque' como fallback
+        const estaAtivo = modelo.ativo !== undefined ? modelo.ativo : modelo.emEstoque;
+        
         modelosSimples.push({
           id: modelo.id,
           nome: modelo.nome,
-          ativo: modelo.emEstoque
+          ativo: estaAtivo
         });
       }
     });
@@ -91,14 +95,15 @@ export class GerenciarModelosComponent implements OnInit {
       this.isLoading = true;
       const formData = this.modeloForm.value;
 
-      // CRIAR MODELO COMPLETO para o backend
+      // CORREÇÃO: Usar a propriedade 'ativo' corretamente
       const modeloCompleto: Modelo = {
         id: this.editMode ? this.modeloEditId! : 0,
         nome: formData.nome,
         tamanho: '40',
         preco: 0,
         cor: 'Preto',
-        emEstoque: formData.ativo
+        emEstoque: true, // Mantém compatibilidade
+        ativo: formData.ativo // NOVA PROPRIEDADE para status do modelo
       };
 
       console.log('Enviando para o servidor:', modeloCompleto);
@@ -114,9 +119,6 @@ export class GerenciarModelosComponent implements OnInit {
           },
           error: (error) => {
             console.error('ERRO COMPLETO (update):', error);
-            console.error('Status:', error.status);
-            console.error('Mensagem:', error.message);
-            console.error('Error body:', error.error);
             this.mensagem = `Erro ao atualizar modelo: ${error.status} - ${error.message}. Verifique o console.`;
             this.isLoading = false;
           }
@@ -132,9 +134,6 @@ export class GerenciarModelosComponent implements OnInit {
           },
           error: (error) => {
             console.error('ERRO COMPLETO (create):', error);
-            console.error('Status:', error.status);
-            console.error('Mensagem:', error.message);
-            console.error('Error body:', error.error);
             this.mensagem = `Erro ao cadastrar modelo: ${error.status} - ${error.message}. Verifique o console.`;
             this.isLoading = false;
           }

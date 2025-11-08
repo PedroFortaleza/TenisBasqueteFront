@@ -1,0 +1,69 @@
+<div class="pesquisa-container">
+  <div class="pesquisa-header">
+    <h1>Resultados da Pesquisa</h1>
+  </div>
+
+  <div class="resultados-section">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading">
+      <div class="spinner"></div>
+      <p>Pesquisando...</p>
+    </div>
+
+    <!-- Nenhum Resultado -->
+    <div *ngIf="!isLoading && nenhumResultado" class="nenhum-resultado">
+      <div class="nenhum-resultado-content">
+        <h3>Nenhum tênis encontrado</h3>
+        <p>Não encontramos resultados para "{{ termoPesquisa }}"</p>
+        <p class="sugestao">Confira outros modelos disponíveis:</p>
+        
+        <div class="sugestoes-grid" *ngIf="todosTenis.length > 0">
+          <div class="produto-card" *ngFor="let tenis of todosTenis.slice(0, 6)" (click)="verDetalhes(tenis)">
+            <div class="produto-image">
+              <div class="no-image">Imagem</div>
+            </div>
+            <div class="produto-info">
+              <h4 class="produto-nome">{{ tenis.nome }}</h4>
+              <p class="produto-preco">{{ tenis.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
+              <p class="produto-detalhes">{{ tenis.material }} • {{ tenis.genero }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Com Resultados -->
+    <div *ngIf="!isLoading && !nenhumResultado" class="com-resultados">
+      <div class="resultados-info">
+        <h2>
+          <span *ngIf="termoPesquisa">
+            Resultados para "{{ termoPesquisa }}" ({{ resultados.length }})
+          </span>
+          <span *ngIf="!termoPesquisa">
+            Todos os Tênis ({{ resultados.length }})
+          </span>
+        </h2>
+      </div>
+
+      <div class="resultados-grid">
+        <div class="produto-card" *ngFor="let tenis of resultados" (click)="verDetalhes(tenis)">
+          <div class="produto-image">
+            <div class="no-image">Imagem</div>
+          </div>
+          <div class="produto-info">
+            <h4 class="produto-nome">{{ tenis.nome }}</h4>
+            <p class="produto-descricao">{{ tenis.descricao | slice:0:80 }}...</p>
+            <p class="produto-preco">{{ tenis.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
+            <div class="produto-detalhes">
+              <span class="material">{{ tenis.material }}</span>
+              <span class="genero">{{ tenis.genero }}</span>
+            </div>
+            <div *ngIf="tenis.tamanhos && tenis.tamanhos.length > 0" class="tamanhos">
+              <small>Tamanhos: {{ tenis.tamanhos.join(', ') }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

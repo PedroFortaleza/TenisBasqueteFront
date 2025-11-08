@@ -1,0 +1,44 @@
+<div class="tenis-container">
+  <div class="tenis-header">
+    <button class="btn-voltar" (click)="voltarParaHome()">← Voltar</button>
+    <h1>Detalhes do Tênis</h1>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    Carregando detalhes do tênis...
+  </div>
+
+  <div *ngIf="error && !isLoading" class="error">
+    <p>{{ error }}</p>
+    <button class="btn-voltar" (click)="voltarParaHome()">Voltar para Home</button>
+  </div>
+
+  <div *ngIf="tenis && !isLoading" class="tenis-details">
+    <div class="tenis-image">
+      <div class="image-placeholder">Imagem do Tênis</div>
+    </div>
+    
+    <div class="tenis-info">
+      <h2 class="tenis-nome">{{ tenis.nome }}</h2>
+      <p class="tenis-descricao">{{ tenis.descricao }}</p>
+      
+      <div class="tenis-preco">
+        <span class="preco">{{ tenis.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+      </div>
+
+      <div class="tenis-detalhes">
+        <div class="detalhe-item">
+          <strong>Material:</strong> {{ tenis.material }}
+        </div>
+        <div class="detalhe-item">
+          <strong>Gênero:</strong> {{ tenis.genero }}
+        </div>
+        <div *ngIf="tenis.tamanhos && tenis.tamanhos.length > 0" class="detalhe-item">
+          <strong>Tamanhos disponíveis:</strong> {{ tenis.tamanhos.join(', ') }}
+        </div>
+      </div>
+
+      <button class="btn-comprar">Adicionar ao Carrinho</button>
+    </div>
+  </div>
+</div>

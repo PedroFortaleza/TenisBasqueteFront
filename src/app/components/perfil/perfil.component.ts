@@ -33,7 +33,7 @@ export class PerfilComponent implements OnInit {
   }
 
   irParaCadastroTenis(): void {
-    this.router.navigate(['/UsuarioAdm']);
+    this.router.navigate(['/gerenciar-tenis']);
   }
 
   irParaGerenciamentoGeral(): void {
