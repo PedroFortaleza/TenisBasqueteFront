@@ -1,13 +1,26 @@
 <div class="login-container">
+  <!-- Card de login totalmente redesenhado -->
   <div class="login-card">
     <div class="login-header">
-      <h1>Login</h1>
-      <p>Acesse sua conta Fortal</p>
+      <div class="logo-circle">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <h1>Bem-vindo de volta</h1>
+      <p>Entre na sua conta Fortal</p>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          Email
+        </label>
         <input 
           type="email" 
           id="email" 
@@ -21,7 +34,13 @@
       </div>
 
       <div class="form-group">
-        <label for="senha">Senha</label>
+        <label for="senha">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          Senha
+        </label>
         <input 
           type="password" 
           id="senha" 
@@ -38,13 +57,21 @@
         type="submit" 
         [disabled]="loginForm.invalid || isLoading" 
         class="btn-login">
-        {{ isLoading ? 'Entrando...' : 'Entrar' }}
+        <span *ngIf="!isLoading">Entrar</span>
+        <span *ngIf="isLoading" class="loading-spinner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+          </svg>
+          Entrando...
+        </span>
       </button>
 
-      <!-- Credenciais de teste atualizadas -->
       <div class="test-credentials">
-        <p>Credenciais do Administrador:</p>
+        <p>Credenciais de teste:</p>
         <button type="button" (click)="preencherCredenciaisAdmin()" class="btn-test">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
           Preencher Admin
         </button>
         <small>pedrofortal@example.com / 123456</small>
@@ -52,6 +79,11 @@
     </form>
 
     <div *ngIf="mensagemErro" class="error-message global-error">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
       {{ mensagemErro }}
     </div>
 

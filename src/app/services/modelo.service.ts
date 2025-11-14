@@ -20,14 +20,28 @@ export class ModeloService {
   }
 
   create(modelo: Modelo): Observable<Modelo> {
-    return this.http.post<Modelo>(this.apiUrl, modelo);
+    // Garantir que o modelo tenha todos os campos necessários
+    const modeloCompleto = this.prepararModeloParaBackend(modelo);
+    return this.http.post<Modelo>(this.apiUrl, modeloCompleto);
   }
 
   update(id: number, modelo: Modelo): Observable<Modelo> {
-    return this.http.put<Modelo>(`${this.apiUrl}/${id}`, modelo);
+    const modeloCompleto = this.prepararModeloParaBackend(modelo);
+    return this.http.put<Modelo>(`${this.apiUrl}/${id}`, modeloCompleto);
   }
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  private prepararModeloParaBackend(modelo: Modelo): any {
+    return {
+      id: modelo.id,
+      nome: modelo.nome,
+      tamanho: modelo.tamanho || '40',
+      preco: modelo.preco || 0,
+      cor: modelo.cor || 'Preto',
+      emEstoque: modelo.ativo !== undefined ? modelo.ativo : modelo.emEstoque
+    };
   }
 }

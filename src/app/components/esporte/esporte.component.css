@@ -1,5 +1,280 @@
-.esporte-container {
-  padding: 2rem;
+.esportes-container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Montserrat Arabic', sans-serif;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #234859 0%, #1a3642 100%);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 12px;
+}
+
+.page-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border: 1px solid #f5c6cb;
+}
+
+.esportes-section {
+  margin-bottom: 3rem;
+}
+
+.esportes-section h2 {
+  color: #234859;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.loading, .no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.esportes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.esporte-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.esporte-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  border-color: #234859;
+}
+
+.esporte-card.selected {
+  border-color: #234859;
+  background-color: #f8f9fa;
+}
+
+.esporte-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.esporte-card h3 {
+  margin: 0 0 1rem 0;
+  color: #234859;
+  font-size: 1.3rem;
+}
+
+.esporte-card p {
+  margin: 0;
+  color: #6c757d;
+  line-height: 1.5;
+}
+
+.tenis-section {
+  margin-top: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-header h2 {
+  color: #234859;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.btn-voltar {
+  padding: 0.75rem 1.5rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Montserrat Arabic', sans-serif;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #545b62;
+}
+
+.tenis-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.tenis-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.tenis-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.tenis-image {
+  height: 200px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-placeholder {
+  text-align: center;
+  color: #6c757d;
+}
+
+.image-placeholder span {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.image-placeholder p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.tenis-info {
+  padding: 1.5rem;
+}
+
+.tenis-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #234859;
+  font-size: 1.2rem;
+}
+
+.tenis-descricao {
+  color: #6c757d;
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.tenis-details {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.genero, .material {
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tamanhos {
+  margin-bottom: 1rem;
+}
+
+.tamanhos strong {
+  color: #234859;
+  font-size: 0.9rem;
+}
+
+.tamanhos-lista {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.tenis-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #234859;
+  margin-bottom: 1rem;
+}
+
+.btn-comprar {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #234859;
+  color: #C6D3D9;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Montserrat Arabic', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-comprar:hover {
+  background-color: #1a3642;
+}
+
+@media (max-width: 768px) {
+  .esportes-container {
+    padding: 1rem;
+  }
+
+  .page-header {
+    padding: 2rem 1rem;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .esportes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tenis-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tenis-details {
+    flex-direction: column;
+  }
 }

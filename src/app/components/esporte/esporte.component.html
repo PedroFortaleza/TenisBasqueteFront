@@ -1,4 +1,91 @@
-<div class="esporte-container">
-  <h1>Esportes</h1>
-  <p>Página de esportes em desenvolvimento...</p>
+<div class="esportes-container">
+  <!-- Header -->
+  <div class="page-header">
+    <h1>Esportes</h1>
+    <p>Encontre o tênis perfeito para sua modalidade esportiva</p>
+  </div>
+
+  <!-- Mensagem de Erro -->
+  <div *ngIf="erro" class="error-message">
+    {{ erro }}
+  </div>
+
+  <!-- Seção de Esportes -->
+  <div class="esportes-section">
+    <h2>Escolha seu Esporte</h2>
+    
+    <div *ngIf="carregandoEsportes" class="loading">
+      Carregando esportes...
+    </div>
+
+    <div *ngIf="!carregandoEsportes && esportes.length === 0" class="no-data">
+      Nenhum esporte disponível no momento.
+    </div>
+
+    <div class="esportes-grid" *ngIf="esportes.length > 0">
+      <div 
+        *ngFor="let esporte of esportes" 
+        class="esporte-card" 
+        [class.selected]="esporteSelecionado?.id === esporte.id"
+        (click)="selecionarEsporte(esporte)"
+      >
+        <div class="esporte-icon">
+          
+        </div>
+        <h3>{{ esporte.nome }}</h3>
+        <p *ngIf="esporte.descricao">{{ esporte.descricao }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seção de Tênis (apenas quando um esporte estiver selecionado) -->
+  <div *ngIf="esporteSelecionado" class="tenis-section">
+    <div class="section-header">
+      <h2>Tênis para {{ esporteSelecionado.nome }}</h2>
+      <button (click)="limparSelecao()" class="btn-voltar">Ver Todos os Esportes</button>
+    </div>
+
+    <div *ngIf="carregandoTenis" class="loading">
+      Carregando tênis...
+    </div>
+
+    <div *ngIf="!carregandoTenis && tenis.length === 0" class="no-data">
+      Nenhum tênis encontrado para {{ esporteSelecionado.nome }}.
+    </div>
+
+    <div class="tenis-grid" *ngIf="tenis.length > 0">
+      <div *ngFor="let tenisItem of tenis" class="tenis-card">
+        <div class="tenis-image">
+          <!-- Removida a imagem temporariamente -->
+          <div class="image-placeholder">
+            <span>🛒</span>
+            <p>Imagem do Tênis</p>
+          </div>
+        </div>
+        
+        <div class="tenis-info">
+          <h3>{{ tenisItem.nome }}</h3>
+          <p class="tenis-descricao" *ngIf="tenisItem.descricao">{{ tenisItem.descricao }}</p>
+          
+          <div class="tenis-details">
+            <span class="genero">{{ tenisItem.genero }}</span>
+            <span class="material">{{ tenisItem.material }}</span>
+          </div>
+
+          <div class="tamanhos">
+            <strong>Tamanhos:</strong>
+            <span class="tamanhos-lista">{{ tenisItem.tamanhos.join(', ') || 'Não informado' }}</span>
+          </div>
+
+          <div class="tenis-price">
+            {{ formatarPreco(tenisItem.preco) }}
+          </div>
+
+          <button class="btn-comprar" [routerLink]="['/tenis', tenisItem.id]">
+            Ver Detalhes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

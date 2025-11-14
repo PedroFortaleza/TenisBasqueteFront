@@ -1,92 +1,308 @@
+/* Importando fonte Poppins moderna para o banner */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Inter:wght@400;600;700;800;900&display=swap");
+
 .home-container {
   width: 100%;
-  font-family: 'Montserrat Arabic', sans-serif;
+  font-family: "Montserrat Arabic", sans-serif;
+  overflow-x: hidden;
 }
 
+/* Novo design do banner com imagens em grid layout */
+/* Alterando cor de fundo do banner para um azul escuro sólido */
 .hero-banner {
-  background: linear-gradient(135deg, rgba(35, 72, 89, 0.85) 0%, rgba(26, 54, 66, 0.85) 100%),
-              url('https://images.unsplash.com/photo-1491553895911-0055eca6402d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 8rem 2rem;
+  position: relative;
+  background: #1e3a5f;
+  padding: 10rem 2rem 8rem;
   text-align: center;
   color: #ffffff;
-  min-height: 70vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(15, 52, 96, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 70% 50%, rgba(22, 33, 62, 0.4) 0%, transparent 50%);
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Novo layout em grid para as imagens de tênis ficarem visíveis */
+.sneakers-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sneaker-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.15;
+  filter: blur(1px) grayscale(0.3);
+  transition: all 0.5s ease;
+}
+
+.sneaker-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+  animation: floatSneaker 8s ease-in-out infinite;
+  display: block;
+}
+
+.sneaker-1 {
+  align-self: start;
+  animation-delay: 0s;
+}
+
+.sneaker-2 {
+  align-self: center;
+  animation-delay: 2.5s;
+}
+
+.sneaker-3 {
+  align-self: end;
+  animation-delay: 5s;
+}
+
+@keyframes floatSneaker {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+  50% {
+    transform: translateY(-25px) rotate(3deg);
+  }
 }
 
 .hero-content {
-  max-width: 800px;
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
   margin: 0 auto;
 }
 
+/* Aplicando fonte Poppins moderna e bold ao título */
+/* Removendo todos os efeitos de texto (sombras, gradiente, brilho) e mantendo apenas fonte Poppins */
 .hero-title {
-  font-size: 3.5rem;
-  font-weight: 800;
+  font-size: 5rem;
+  font-weight: 900;
   color: #ffffff;
   margin: 0 0 1.5rem 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  font-family: 'Montserrat Arabic', sans-serif;
-  letter-spacing: 1px;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 400;
-  color: #C6D3D9;
-  margin: 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  font-family: 'Montserrat Arabic', sans-serif;
-  line-height: 1.6;
+  color: #e8eef3;
+  margin: 0 0 2.5rem 0;
+  font-family: "Inter", sans-serif;
+  line-height: 1.7;
+  letter-spacing: 0.5px;
 }
 
+/* Redesenhando botão CTA com cores laranja/amarelo modernas sem roxo */
+/* Mudando botão para branco com texto escuro */
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.2rem 2.8rem;
+  background: #ffffff;
+  color: #1e3a5f;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+.hero-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #f0f0f0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.hero-cta:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+}
+
+.hero-cta:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.hero-cta .arrow-icon {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s ease;
+}
+
+.hero-cta:hover .arrow-icon {
+  transform: translateX(5px);
+}
+
+.hero-cta * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Animações de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out backwards;
+}
+
+.animate-slide-up.delay-1 {
+  animation-delay: 0.2s;
+}
+
+.animate-slide-up.delay-2 {
+  animation-delay: 0.4s;
+}
+
+/* Seção de produtos modernizada */
 .featured-products {
-  max-width: 1200px;
-  margin: 4rem auto;
+  max-width: 1400px;
+  margin: 6rem auto;
   padding: 0 2rem;
 }
 
 .section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #234859;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #0f2027;
   text-align: center;
-  margin-bottom: 3rem;
-  font-family: 'Montserrat Arabic', sans-serif;
+  margin-bottom: 4rem;
+  font-family: "Inter", sans-serif;
+  position: relative;
+  display: inline-block;
+  width: 100%;
 }
 
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+  border-radius: 2px;
+}
+
+/* Removendo opacidade inicial e transform dos produtos para torná-los visíveis */
+.animate-on-scroll {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Grid responsivo modernizado */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2.5rem;
 }
 
+/* Cards de produto sempre visíveis */
 .product-card {
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  font-family: 'Montserrat Arabic', sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "Montserrat Arabic", sans-serif;
   cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(33, 147, 176, 0.3);
+}
+
+.product-image-wrapper {
+  position: relative;
+  overflow: hidden;
 }
 
 .product-image {
   width: 100%;
-  height: 250px;
-  background-color: #C6D3D9;
+  height: 280px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
 }
 
 .product-image img {
@@ -99,128 +315,352 @@
   color: #234859;
   font-size: 1rem;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
+.no-image svg {
+  opacity: 0.5;
+}
+
+/* Overlay com botão de visualização rápida */
+.product-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 32, 39, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover .product-overlay {
+  opacity: 1;
+}
+
+.btn-quick-view {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #ffffff;
+  color: #0f2027;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Montserrat Arabic", sans-serif;
+  transform: translateY(10px);
+}
+
+.product-card:hover .btn-quick-view {
+  transform: translateY(0);
+}
+
+.btn-quick-view:hover {
+  background: #f5f5f5;
+  transform: scale(1.05);
+}
+
+/* Info do produto redesenhada */
 .product-info {
-  padding: 1.5rem;
+  padding: 1.75rem;
+}
+
+.product-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tag.material {
+  background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+  color: #ffffff;
+}
+
+.tag.genero {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  color: #ffffff;
 }
 
 .product-name {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #000000;
-  margin: 0 0 0.5rem 0;
-  font-family: 'Montserrat Arabic', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f2027;
+  margin: 0 0 0.75rem 0;
+  font-family: "Inter", sans-serif;
+  line-height: 1.3;
 }
 
 .product-description {
   color: #6c757d;
-  margin: 0.5rem 0;
-  line-height: 1.4;
+  margin: 0 0 1rem 0;
+  line-height: 1.6;
   font-size: 0.9rem;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .product-price {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #234859;
-  margin: 0 0 1rem 0;
-  font-family: 'Montserrat Arabic', sans-serif;
-}
-
-.product-details {
-  display: flex;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
-  flex-wrap: wrap;
-}
-
-.material, .genero {
-  background-color: #f8f9fa;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  color: #495057;
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  font-family: "Inter", sans-serif;
 }
 
 .btn-view-more {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #234859;
-  color: #C6D3D9;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+  color: #ffffff;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: 'Montserrat Arabic', sans-serif;
-  margin-top: 1rem;
+  transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
+  white-space: nowrap;
 }
 
 .btn-view-more:hover {
-  background-color: #1a3642;
+  transform: translateX(3px);
+  box-shadow: 0 4px 12px rgba(15, 32, 39, 0.3);
 }
 
+.btn-view-more svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-view-more:hover svg {
+  transform: translateX(3px);
+}
+
+/* Loading spinner moderno */
 .loading {
-  text-align: center;
-  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem;
   color: #234859;
   font-size: 1.1rem;
+  gap: 1.5rem;
 }
 
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(33, 147, 176, 0.1);
+  border-top-color: #2193b0;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Estado vazio melhorado */
 .no-products {
-  text-align: center;
-  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
   color: #6c757d;
+  gap: 1rem;
+}
+
+.empty-icon {
+  opacity: 0.3;
+}
+
+.no-products p {
+  font-size: 1.1rem;
   font-style: italic;
+  margin: 0;
 }
 
+/* Footer modernizado */
 .footer {
-  background-color: #234859;
-  color: #C6D3D9;
-  text-align: center;
-  padding: 2rem;
-  margin-top: 4rem;
-  font-family: 'Montserrat Arabic', sans-serif;
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  color: #c6d3d9;
+  padding: 3rem 2rem 2rem;
+  margin-top: 6rem;
+  font-family: "Inter", sans-serif;
+  position: relative;
+  overflow: hidden;
 }
 
-.footer p {
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(33, 147, 176, 0.5) 50%, transparent 100%);
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-brand h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+}
+
+.footer-brand p {
   margin: 0;
   font-size: 0.9rem;
+  opacity: 0.8;
 }
 
+.footer-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #c6d3d9;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.social-link:hover {
+  background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+  color: #ffffff;
+  transform: translateY(-3px);
+}
+
+.footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(198, 211, 217, 0.2);
+  text-align: center;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Atualizando responsividade para o novo layout */
 @media (max-width: 768px) {
   .hero-banner {
-    padding: 4rem 1rem;
-    min-height: 50vh;
+    padding: 6rem 1.5rem 5rem;
+    min-height: 70vh;
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
+    letter-spacing: 1px;
   }
 
   .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta {
+    padding: 1rem 2.2rem;
+    font-size: 1rem;
+  }
+
+  .sneakers-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .sneaker-card {
+    opacity: 0.1;
   }
 
   .section-title {
-    font-size: 2rem;
+    font-size: 2.25rem;
+    margin-bottom: 3rem;
   }
 
   .products-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   .product-image {
-    height: 200px;
+    height: 240px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .product-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-view-more {
+    width: 100%;
+    justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 
   .hero-subtitle {
@@ -228,22 +668,92 @@
   }
 
   .section-title {
-    font-size: 1.75rem;
+    font-size: 1.85rem;
   }
 
   .featured-products {
+    margin: 4rem auto;
     padding: 0 1rem;
   }
 
   .product-info {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   .product-name {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
   .product-price {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .sneakers-grid {
+    display: none;
   }
 }
+/* ... (mantenha todo o CSS anterior igual) ... */
+
+/* Footer modernizado SEM REDES SOCIAIS */
+.footer {
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  color: #c6d3d9;
+  padding: 3rem 2rem 2rem;
+  margin-top: 6rem;
+  font-family: "Inter", sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(33, 147, 176, 0.5) 50%, transparent 100%);
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centralizado sem redes sociais */
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-brand h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+  text-align: center;
+}
+
+.footer-brand p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-align: center;
+}
+
+/* REMOVIDA A SEÇÃO .footer-social */
+
+.footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(198, 211, 217, 0.2);
+  text-align: center;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ... (mantenha o resto do CSS anterior) ... */

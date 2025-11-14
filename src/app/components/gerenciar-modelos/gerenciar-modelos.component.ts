@@ -69,25 +69,47 @@ export class GerenciarModelosComponent implements OnInit {
   }
 
   private transformarEmModelosSimples(modelosCompletos: Modelo[]): ModeloSimples[] {
-    const nomesUnicos = new Set<string>();
     const modelosSimples: ModeloSimples[] = [];
 
     modelosCompletos.forEach(modelo => {
-      if (!nomesUnicos.has(modelo.nome)) {
-        nomesUnicos.add(modelo.nome);
-        
-        // CORREÇÃO: Usar a propriedade 'ativo' se existir, senão usar 'emEstoque' como fallback
-        const estaAtivo = modelo.ativo !== undefined ? modelo.ativo : modelo.emEstoque;
-        
-        modelosSimples.push({
-          id: modelo.id,
-          nome: modelo.nome,
-          ativo: estaAtivo
-        });
-      }
+      // CORREÇÃO: Determinar o status baseado na propriedade correta
+      const estaAtivo = this.determinarStatusAtivo(modelo);
+      
+      modelosSimples.push({
+        id: modelo.id,
+        nome: modelo.nome,
+        ativo: estaAtivo
+      });
     });
 
-    return modelosSimples;
+    // Remover duplicados se necessário
+    return this.removerDuplicados(modelosSimples);
+  }
+
+  private determinarStatusAtivo(modelo: Modelo): boolean {
+    // Prioridade 1: usar a propriedade 'ativo' se existir
+    if (modelo.ativo !== undefined) {
+      return modelo.ativo;
+    }
+    
+    // Prioridade 2: usar 'emEstoque' como fallback
+    if (modelo.emEstoque !== undefined) {
+      return modelo.emEstoque;
+    }
+    
+    // Padrão: se não há informação, considerar como ativo
+    return true;
+  }
+
+  private removerDuplicados(modelos: ModeloSimples[]): ModeloSimples[] {
+    const nomesUnicos = new Set<string>();
+    return modelos.filter(modelo => {
+      if (nomesUnicos.has(modelo.nome)) {
+        return false;
+      }
+      nomesUnicos.add(modelo.nome);
+      return true;
+    });
   }
 
   onSubmit(): void {
@@ -95,50 +117,41 @@ export class GerenciarModelosComponent implements OnInit {
       this.isLoading = true;
       const formData = this.modeloForm.value;
 
-      // CORREÇÃO: Usar a propriedade 'ativo' corretamente
+      // CORREÇÃO: Criar modelo com propriedade ativo
       const modeloCompleto: Modelo = {
         id: this.editMode ? this.modeloEditId! : 0,
         nome: formData.nome,
         tamanho: '40',
         preco: 0,
         cor: 'Preto',
-        emEstoque: true, // Mantém compatibilidade
-        ativo: formData.ativo // NOVA PROPRIEDADE para status do modelo
+        emEstoque: true, // Para compatibilidade com backend
+        ativo: formData.ativo // Nova propriedade
       };
 
-      console.log('Enviando para o servidor:', modeloCompleto);
+      console.log('Enviando modelo:', modeloCompleto);
 
-      if (this.editMode && this.modeloEditId) {
-        this.modeloService.update(this.modeloEditId, modeloCompleto).subscribe({
-          next: (modeloAtualizado) => {
-            console.log('Resposta do servidor (update):', modeloAtualizado);
-            this.mensagem = `Modelo "${modeloAtualizado.nome}" atualizado com sucesso!`;
-            this.carregarModelos();
+      const operacao = this.editMode && this.modeloEditId 
+        ? this.modeloService.update(this.modeloEditId, modeloCompleto)
+        : this.modeloService.create(modeloCompleto);
+
+      operacao.subscribe({
+        next: (modeloResultado) => {
+          console.log('Resposta do servidor:', modeloResultado);
+          this.mensagem = `Modelo "${modeloResultado.nome}" ${this.editMode ? 'atualizado' : 'cadastrado'} com sucesso!`;
+          this.carregarModelos();
+          if (this.editMode) {
             this.cancelarEdicao();
-            this.isLoading = false;
-          },
-          error: (error) => {
-            console.error('ERRO COMPLETO (update):', error);
-            this.mensagem = `Erro ao atualizar modelo: ${error.status} - ${error.message}. Verifique o console.`;
-            this.isLoading = false;
-          }
-        });
-      } else {
-        this.modeloService.create(modeloCompleto).subscribe({
-          next: (modeloCriado) => {
-            console.log('Resposta do servidor (create):', modeloCriado);
-            this.mensagem = `Modelo "${modeloCriado.nome}" cadastrado com sucesso!`;
-            this.carregarModelos();
+          } else {
             this.resetForm();
-            this.isLoading = false;
-          },
-          error: (error) => {
-            console.error('ERRO COMPLETO (create):', error);
-            this.mensagem = `Erro ao cadastrar modelo: ${error.status} - ${error.message}. Verifique o console.`;
-            this.isLoading = false;
           }
-        });
-      }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Erro completo:', error);
+          this.mensagem = `Erro ao ${this.editMode ? 'atualizar' : 'cadastrar'} modelo: ${error.message || 'Erro desconhecido'}`;
+          this.isLoading = false;
+        }
+      });
     } else {
       this.modeloForm.markAllAsTouched();
     }
@@ -151,6 +164,9 @@ export class GerenciarModelosComponent implements OnInit {
       nome: modelo.nome,
       ativo: modelo.ativo
     });
+    
+    // Scroll para o formulário
+    document.querySelector('.form-section')?.scrollIntoView({ behavior: 'smooth' });
     this.mensagem = '';
   }
 

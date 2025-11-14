@@ -1,43 +1,60 @@
 <div class="pesquisa-container">
+  <!-- Header modernizado -->
   <div class="pesquisa-header">
     <h1>Resultados da Pesquisa</h1>
+    <p *ngIf="termoPesquisa">Buscando por: <strong>"{{ termoPesquisa }}"</strong></p>
   </div>
 
   <div class="resultados-section">
-    <!-- Loading State -->
+    <!-- Loading state modernizado -->
     <div *ngIf="isLoading" class="loading">
       <div class="spinner"></div>
-      <p>Pesquisando...</p>
+      <p>Pesquisando tênis...</p>
     </div>
 
-    <!-- Nenhum Resultado -->
+    <!-- Nenhum resultado redesenhado -->
     <div *ngIf="!isLoading && nenhumResultado" class="nenhum-resultado">
       <div class="nenhum-resultado-content">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
         <h3>Nenhum tênis encontrado</h3>
         <p>Não encontramos resultados para "{{ termoPesquisa }}"</p>
         <p class="sugestao">Confira outros modelos disponíveis:</p>
         
+        <!-- Cards de sugestão com padrão da home -->
         <div class="sugestoes-grid" *ngIf="todosTenis.length > 0">
-          <div class="produto-card" *ngFor="let tenis of todosTenis.slice(0, 6)" (click)="verDetalhes(tenis)">
-            <div class="produto-image">
-              <div class="no-image">Imagem</div>
+          <div class="product-card" *ngFor="let tenis of todosTenis.slice(0, 6)" (click)="verDetalhes(tenis)">
+            <div class="product-image-wrapper">
+              <div class="product-image">
+                <div class="no-image">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div class="produto-info">
-              <h4 class="produto-nome">{{ tenis.nome }}</h4>
-              <p class="produto-preco">{{ tenis.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
-              <p class="produto-detalhes">{{ tenis.material }} • {{ tenis.genero }}</p>
+            <div class="product-info">
+              <div class="product-tags">
+                <span class="tag genero">{{ tenis.genero }}</span>
+                <span class="tag material">{{ tenis.material }}</span>
+              </div>
+              <h4 class="product-name">{{ tenis.nome }}</h4>
+              <p class="product-price">{{ tenis.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Com Resultados -->
+    <!-- Resultados com cards padrão da home -->
     <div *ngIf="!isLoading && !nenhumResultado" class="com-resultados">
       <div class="resultados-info">
         <h2>
           <span *ngIf="termoPesquisa">
-            Resultados para "{{ termoPesquisa }}" ({{ resultados.length }})
+            {{ resultados.length }} resultado{{ resultados.length !== 1 ? 's' : '' }} encontrado{{ resultados.length !== 1 ? 's' : '' }}
           </span>
           <span *ngIf="!termoPesquisa">
             Todos os Tênis ({{ resultados.length }})
@@ -45,21 +62,48 @@
         </h2>
       </div>
 
-      <div class="resultados-grid">
-        <div class="produto-card" *ngFor="let tenis of resultados" (click)="verDetalhes(tenis)">
-          <div class="produto-image">
-            <div class="no-image">Imagem</div>
-          </div>
-          <div class="produto-info">
-            <h4 class="produto-nome">{{ tenis.nome }}</h4>
-            <p class="produto-descricao">{{ tenis.descricao | slice:0:80 }}...</p>
-            <p class="produto-preco">{{ tenis.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
-            <div class="produto-detalhes">
-              <span class="material">{{ tenis.material }}</span>
-              <span class="genero">{{ tenis.genero }}</span>
+      <div class="products-grid">
+        <div class="product-card" *ngFor="let tenis of resultados" (click)="verDetalhes(tenis)">
+          <div class="product-image-wrapper">
+            <div class="product-image">
+              <div class="no-image">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+                <span>Imagem</span>
+              </div>
             </div>
-            <div *ngIf="tenis.tamanhos && tenis.tamanhos.length > 0" class="tamanhos">
-              <small>Tamanhos: {{ tenis.tamanhos.join(', ') }}</small>
+            <div class="product-overlay">
+              <button class="btn-quick-view">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                Visualizar
+              </button>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-tags">
+              <span class="tag material">{{ tenis.material }}</span>
+              <span class="tag genero">{{ tenis.genero }}</span>
+            </div>
+            <h4 class="product-name">{{ tenis.nome }}</h4>
+            <p class="product-description">{{ tenis.descricao | slice:0:80 }}...</p>
+            
+            <div *ngIf="tenis.tamanhos && tenis.tamanhos.length > 0" class="tamanhos-info">
+              <strong>Tamanhos:</strong> {{ tenis.tamanhos.join(', ') }}
+            </div>
+
+            <div class="product-footer">
+              <p class="product-price">{{ tenis.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
+              <button class="btn-view-more">
+                Ver Detalhes
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9 18 15 12 9 6"/>
+                </svg>
+              </button>
             </div>
           </div>
         </div>
