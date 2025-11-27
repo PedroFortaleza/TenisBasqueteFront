@@ -1,3 +1,4 @@
+// gerenciamento-geral.component.ts (mantido igual - apenas o design foi atualizado)
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -28,19 +29,19 @@ export class GerenciamentoGeralComponent implements OnInit {
     this.router.navigate(['/perfil']);
   }
 
-gerenciarMarcas(): void {
-  this.router.navigate(['/gerenciar-marcas']);
-}
+  gerenciarMarcas(): void {
+    this.router.navigate(['/gerenciar-marcas']);
+  }
 
-gerenciarModelos(): void {
-  this.router.navigate(['/gerenciar-modelos']);
-}
+  gerenciarModelos(): void {
+    this.router.navigate(['/gerenciar-modelos']);
+  }
 
-gerenciarCores(): void {
-  this.router.navigate(['/gerenciar-cores']);
-}
+  gerenciarCores(): void {
+    this.router.navigate(['/gerenciar-cores']);
+  }
 
-gerenciarEsportes(): void {
-  this.router.navigate(['/gerenciar-esportes']);
-}
+  gerenciarEsportes(): void {
+    this.router.navigate(['/gerenciar-esportes']);
+  }
 }

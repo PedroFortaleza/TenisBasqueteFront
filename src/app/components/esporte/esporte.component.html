@@ -1,6 +1,7 @@
+<!-- esporte.component.html -->
 <div class="esportes-container">
-  <!-- Header -->
-  <div class="page-header">
+  <!-- Header modernizado -->
+  <div class="esportes-header">
     <h1>Esportes</h1>
     <p>Encontre o tênis perfeito para sua modalidade esportiva</p>
   </div>
@@ -12,16 +13,23 @@
 
   <!-- Seção de Esportes -->
   <div class="esportes-section">
-    <h2>Escolha seu Esporte</h2>
+    <h2 class="section-title">Escolha seu Esporte</h2>
     
+    <!-- Loading state modernizado -->
     <div *ngIf="carregandoEsportes" class="loading">
-      Carregando esportes...
+      <div class="spinner"></div>
+      <p>Carregando esportes...</p>
     </div>
 
+    <!-- Nenhum esporte disponível -->
     <div *ngIf="!carregandoEsportes && esportes.length === 0" class="no-data">
-      Nenhum esporte disponível no momento.
+      <div class="no-data-content">
+        <h3>Nenhum esporte disponível</h3>
+        <p>Não há esportes cadastrados no momento.</p>
+      </div>
     </div>
 
+    <!-- Grid de esportes -->
     <div class="esportes-grid" *ngIf="esportes.length > 0">
       <div 
         *ngFor="let esporte of esportes" 
@@ -29,11 +37,15 @@
         [class.selected]="esporteSelecionado?.id === esporte.id"
         (click)="selecionarEsporte(esporte)"
       >
-        <div class="esporte-icon">
-          
+        <div class="esporte-icon-wrapper">
+          <div class="esporte-icon">
+            
+          </div>
         </div>
-        <h3>{{ esporte.nome }}</h3>
-        <p *ngIf="esporte.descricao">{{ esporte.descricao }}</p>
+        <div class="esporte-info">
+          <h3 class="esporte-name">{{ esporte.nome }}</h3>
+          <p class="esporte-description" *ngIf="esporte.descricao">{{ esporte.descricao }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -42,48 +54,73 @@
   <div *ngIf="esporteSelecionado" class="tenis-section">
     <div class="section-header">
       <h2>Tênis para {{ esporteSelecionado.nome }}</h2>
-      <button (click)="limparSelecao()" class="btn-voltar">Ver Todos os Esportes</button>
+      <button (click)="limparSelecao()" class="btn-voltar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Ver Todos os Esportes
+      </button>
     </div>
 
+    <!-- Loading state modernizado -->
     <div *ngIf="carregandoTenis" class="loading">
-      Carregando tênis...
+      <div class="spinner"></div>
+      <p>Carregando tênis...</p>
     </div>
 
+    <!-- Nenhum tênis encontrado -->
     <div *ngIf="!carregandoTenis && tenis.length === 0" class="no-data">
-      Nenhum tênis encontrado para {{ esporteSelecionado.nome }}.
+      <div class="no-data-content">
+        <h3>Nenhum tênis encontrado</h3>
+        <p>Não há tênis disponíveis para {{ esporteSelecionado.nome }} no momento.</p>
+      </div>
     </div>
 
+    <!-- Grid de tênis -->
     <div class="tenis-grid" *ngIf="tenis.length > 0">
-      <div *ngFor="let tenisItem of tenis" class="tenis-card">
-        <div class="tenis-image">
-          <!-- Removida a imagem temporariamente -->
-          <div class="image-placeholder">
-            <span>🛒</span>
-            <p>Imagem do Tênis</p>
+      <div *ngFor="let tenisItem of tenis" class="tenis-card" [routerLink]="['/tenis', tenisItem.id]">
+        <div class="tenis-image-wrapper">
+          <div class="tenis-image">
+            <div class="no-image">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              <span>Imagem do Tênis</span>
+            </div>
+          </div>
+          <div class="tenis-overlay">
+            <button class="btn-quick-view">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              Visualizar
+            </button>
           </div>
         </div>
         
         <div class="tenis-info">
-          <h3>{{ tenisItem.nome }}</h3>
-          <p class="tenis-descricao" *ngIf="tenisItem.descricao">{{ tenisItem.descricao }}</p>
+          <div class="tenis-tags">
+            <span class="tag material">{{ tenisItem.material }}</span>
+            <span class="tag genero">{{ tenisItem.genero }}</span>
+          </div>
+          <h4 class="tenis-name">{{ tenisItem.nome }}</h4>
+          <p class="tenis-description" *ngIf="tenisItem.descricao">{{ tenisItem.descricao | slice:0:80 }}...</p>
           
-          <div class="tenis-details">
-            <span class="genero">{{ tenisItem.genero }}</span>
-            <span class="material">{{ tenisItem.material }}</span>
+          <div *ngIf="tenisItem.tamanhos && tenisItem.tamanhos.length > 0" class="tamanhos-info">
+            <strong>Tamanhos:</strong> {{ tenisItem.tamanhos.join(', ') }}
           </div>
 
-          <div class="tamanhos">
-            <strong>Tamanhos:</strong>
-            <span class="tamanhos-lista">{{ tenisItem.tamanhos.join(', ') || 'Não informado' }}</span>
+          <div class="tenis-footer">
+            <p class="tenis-price">{{ formatarPreco(tenisItem.preco) }}</p>
+            <button class="btn-view-details">
+              Ver Detalhes
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
           </div>
-
-          <div class="tenis-price">
-            {{ formatarPreco(tenisItem.preco) }}
-          </div>
-
-          <button class="btn-comprar" [routerLink]="['/tenis', tenisItem.id]">
-            Ver Detalhes
-          </button>
         </div>
       </div>
     </div>

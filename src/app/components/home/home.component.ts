@@ -33,24 +33,117 @@ export class HomeComponent implements OnInit, AfterViewInit {
   carregarProdutosDestaque(): void {
     this.isLoading = true
 
-    // Use getAtivos() para carregar apenas tênis ativos
+    // Primeiro tenta carregar produtos ativos
     this.tenisService.getAtivos().subscribe({
       next: (tenis: Tenis[]) => {
-        // Filtrar apenas produtos ativos (segurança extra)
-        this.featuredProducts = tenis.filter((produto) => produto.ativo === true)
+        if (tenis.length > 0) {
+          // Se encontrou produtos ativos, usa eles
+          this.featuredProducts = tenis.slice(0, 9)
+          console.log('Produtos ativos carregados:', this.featuredProducts)
+          
+          // 🔥 DEBUG: Verificar imagens de cada produto
+          this.featuredProducts.forEach((produto, index) => {
+            console.log(`Produto ${index + 1}:`, {
+              nome: produto.nome,
+              imagemUrl: produto.imagemUrl,
+              imagensUrls: produto.imagensUrls,
+              temImagem: this.tenisService.temImagem(produto),
+              imagemPrincipal: this.tenisService.getImagemPrincipal(produto)
+            })
+          })
+        } else {
+          // Se não encontrou produtos ativos, tenta carregar todos
+          this.tenisService.getAll().subscribe({
+            next: (todosTenis: Tenis[]) => {
+              // Filtra apenas produtos ativos ou usa todos se não houver filtro
+              this.featuredProducts = todosTenis
+                .filter(produto => produto.ativo === true || produto.ativo === undefined)
+                .slice(0, 9)
+              console.log('Produtos carregados (fallback):', this.featuredProducts)
+            },
+            error: (error: any) => {
+              console.error("Erro ao carregar todos os produtos:", error)
+              this.featuredProducts = []
+            }
+          })
+        }
         this.isLoading = false
       },
       error: (error: any) => {
-        console.error("Erro ao carregar produtos:", error)
-        this.featuredProducts = []
-        this.isLoading = false
+        console.error("Erro ao carregar produtos ativos:", error)
+        // Se falhar, tenta carregar todos os produtos
+        this.tenisService.getAll().subscribe({
+          next: (todosTenis: Tenis[]) => {
+            this.featuredProducts = todosTenis.slice(0, 9)
+            console.log('Produtos carregados (fallback):', this.featuredProducts)
+            this.isLoading = false
+          },
+          error: (error2: any) => {
+            console.error("Erro também ao carregar todos os produtos:", error2)
+            this.featuredProducts = []
+            this.isLoading = false
+          }
+        })
       },
     })
   }
 
+  // 🔥 MÉTODO MELHORADO: Obter imagem do produto
+  getProductImage(product: Tenis): string {
+    return this.tenisService.getImagemPrincipal(product);
+  }
+
+  // 🔥 MÉTODO MELHORADO: Verificar se produto tem imagem
+  hasProductImage(product: Tenis): boolean {
+    return this.tenisService.temImagem(product);
+  }
+
+  // 🔥 MÉTODO MELHORADO: Tratar erro de carregamento de imagem
+  handleImageError(event: any, product: Tenis): void {
+    console.warn(`Erro ao carregar imagem do produto ${product.nome}:`, event);
+    
+    const target = event.target as HTMLImageElement;
+    
+    // Tentar usar imagemUrl se imagensUrls falhou
+    if (product.imagemUrl && target.src !== product.imagemUrl) {
+      console.log(`Tentando imagemUrl alternativa: ${product.imagemUrl}`);
+      target.src = product.imagemUrl;
+      return;
+    }
+    
+    // Se ambas falharem, mostrar placeholder
+    target.style.display = 'none';
+    const parent = target.parentElement;
+    if (parent) {
+      const placeholder = parent.querySelector('.no-image') as HTMLElement;
+      if (placeholder) {
+        placeholder.style.display = 'flex';
+      }
+    }
+  }
+
+  // 🔥 MÉTODO: Quando imagem carrega com sucesso
+  handleImageLoad(event: any, product: Tenis): void {
+    console.log(`Imagem carregada com sucesso para ${product.nome}`);
+    const target = event.target as HTMLImageElement;
+    target.style.display = 'block';
+    
+    // Esconder placeholder
+    const parent = target.parentElement;
+    if (parent) {
+      const placeholder = parent.querySelector('.no-image') as HTMLElement;
+      if (placeholder) {
+        placeholder.style.display = 'none';
+      }
+    }
+  }
+
   verDetalhes(product: Tenis): void {
-    // Navega para o componente tenis passando o ID como parâmetro
-    this.router.navigate(["/tenis", product.id])
+    if (product.id) {
+      this.router.navigate(["/tenis", product.id])
+    } else {
+      console.error('Produto sem ID:', product)
+    }
   }
 
   scrollToProducts(): void {

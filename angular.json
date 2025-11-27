@@ -21,7 +21,14 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+            
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
+              
             ],
             "styles": [
               "src/styles.css"
@@ -29,7 +36,6 @@
             "polyfills": [
               "zone.js"
             ]
-            
           },
           "configurations": {
             "production": {
@@ -78,7 +84,14 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
+             
             ],
             "styles": [
               "src/styles.css"

@@ -1,14 +1,21 @@
 <div class="admin-container">
+  <!-- Header modernizado -->
   <div class="admin-header">
     <h1>Gerenciar Modelos</h1>
     <p>Cadastre e gerencie os modelos/categorias de tênis</p>
     <button (click)="voltarParaGerenciamento()" class="btn-voltar">← Voltar</button>
   </div>
 
+  <!-- Dica sobre IDs redesenhada -->
+  <div class="form-info">
+    <p><strong>💡 Dica:</strong> Use o ID do modelo ao cadastrar um tênis</p>
+  </div>
+
+  <!-- Formulário de Cadastro/Edição redesenhado -->
   <div class="form-section">
     <h2>{{ editMode ? 'Editar Modelo' : 'Cadastrar Novo Modelo' }}</h2>
     
-    <form [formGroup]="modeloForm" (ngSubmit)="onSubmit()" class="entity-form">
+    <form [formGroup]="modeloForm" (ngSubmit)="onSubmit()" class="modelo-form">
       <div class="form-group">
         <label for="nome">Nome do Modelo *</label>
         <input 
@@ -19,17 +26,17 @@
           placeholder="Ex: Casual, Esportivo, Corrida, Basquete..."
         >
         <div *ngIf="nome?.invalid && nome?.touched" class="error-message">
-          Nome é obrigatório e deve ter pelo menos 2 caracteres
+          <span *ngIf="nome?.errors?.['required']">Nome é obrigatório</span>
+          <span *ngIf="nome?.errors?.['minlength']">Mínimo 2 caracteres</span>
         </div>
       </div>
 
       <div class="form-group checkbox-group">
-        <input 
-          type="checkbox" 
-          id="ativo" 
-          formControlName="ativo"
-        >
-        <label for="ativo">Modelo ativo</label>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="ativo">
+          <span class="checkmark"></span>
+          Modelo ativo
+        </label>
       </div>
 
       <div class="form-actions">
@@ -38,58 +45,69 @@
           class="btn btn-primary" 
           [disabled]="modeloForm.invalid || isLoading"
         >
-          {{ editMode ? 'Atualizar Modelo' : 'Cadastrar Modelo' }}
+          <svg *ngIf="isLoading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v4m0 12v4m8-10h-4M8 12H4m13.657-5.657l-2.828 2.828m-9.9 9.9l-2.828 2.828m14.142 0l-2.828-2.828M6.343 6.343L3.515 3.515"/>
+          </svg>
+          <svg *ngIf="!isLoading" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+          {{ isLoading ? 'Salvando...' : (editMode ? 'Atualizar Modelo' : 'Cadastrar Modelo') }}
         </button>
         
-        <button 
-          *ngIf="editMode" 
-          type="button" 
-          class="btn btn-secondary" 
-          (click)="cancelarEdicao()"
-          [disabled]="isLoading"
-        >
-          Cancelar
+        <button *ngIf="editMode" type="button" (click)="cancelarEdicao()" class="btn btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Cancelar Edição
         </button>
       </div>
     </form>
 
+    <!-- Mensagem de feedback redesenhada -->
     <div *ngIf="mensagem" class="message" [class.success]="!mensagem.includes('Erro')" [class.error]="mensagem.includes('Erro')">
       {{ mensagem }}
     </div>
   </div>
 
-  <!-- Lista de Modelos Cadastrados -->
+  <!-- Lista de Modelos Cadastrados redesenhada -->
   <div class="list-section">
     <h2>Modelos Cadastrados ({{ modelos.length }})</h2>
     
-    <div class="id-info">
-      <p><strong>💡 Dica:</strong> Use o ID do modelo ao cadastrar um tênis</p>
-    </div>
-    
     <div *ngIf="isLoading && modelos.length === 0" class="loading">
-      Carregando modelos...
+      <p>Carregando modelos...</p>
     </div>
 
     <div *ngIf="!isLoading && modelos.length === 0" class="no-data">
-      Nenhum modelo cadastrado.
+      <p>Nenhum modelo cadastrado.</p>
     </div>
 
-    <div class="entity-grid" *ngIf="modelos.length > 0">
-      <div *ngFor="let modelo of modelos" class="entity-card">
-        <div class="entity-info">
-          <div class="entity-header">
-            <h3>{{ modelo.nome }}</h3>
+    <div class="modelo-grid" *ngIf="modelos.length > 0">
+      <div *ngFor="let modelo of modelos" class="modelo-card">
+        <div class="modelo-info">
+          <h3>{{ modelo.nome }}</h3>
+          <div class="modelo-details">
             <span class="entity-id">ID: {{ modelo.id }}</span>
-          </div>
-          <div class="entity-details">
             <span class="status" [class.ativo]="modelo.ativo" [class.inativo]="!modelo.ativo">
               {{ modelo.ativo ? 'Ativo' : 'Inativo' }}
             </span>
           </div>
         </div>
-        <div class="entity-actions">
-          <button (click)="editarModelo(modelo)" class="btn btn-edit">Editar</button>
-          <button (click)="excluirModelo(modelo.id!, modelo.nome)" class="btn btn-delete">Excluir</button>
+        <div class="modelo-actions">
+          <button (click)="editarModelo(modelo)" class="btn-edit">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Editar
+          </button>
+          <button (click)="excluirModelo(modelo.id!, modelo.nome)" class="btn-delete">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            Excluir
+          </button>
         </div>
       </div>
     </div>

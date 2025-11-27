@@ -3,7 +3,7 @@
   <section class="hero-banner">
     <div class="hero-overlay"></div>
     
-    <!-- Grid de imagens de tênis no background - CORRIGIDO -->
+    <!-- Grid de imagens de tênis no background -->
     <div class="sneakers-grid">
       <div class="sneaker-card sneaker-1">
         <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop" alt="Basketball Sneaker">
@@ -17,9 +17,10 @@
     </div>
     
     <div class="hero-content animate-fade-in">
-      <!-- Nova frase com fonte Poppins moderna -->
       <h1 class="hero-title animate-slide-up">PAIXÃO POR PERFORMANCE</h1>
-      <p class="hero-subtitle animate-slide-up delay-1">Descubra os tênis que transformam seu jogo e definem seu estilo</p>
+      <p class="hero-subtitle animate-slide-up delay-1">
+        Descubra nossa coleção exclusiva de 9 modelos premium
+      </p>
       <button class="hero-cta animate-slide-up delay-2" (click)="scrollToProducts()">
         Explorar Coleção
         <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -31,9 +32,9 @@
 
   <!-- Seção de produtos com animações de entrada -->
   <section class="featured-products" #productsSection>
-    <h2 class="section-title animate-on-scroll">Modelos em Destaque</h2>
+    <h2 class="section-title animate-on-scroll">Nossos 9 Modelos Exclusivos</h2>
     
-    <!-- Loading State com spinner moderno -->
+    <!-- Loading State -->
     <div *ngIf="isLoading" class="loading">
       <div class="spinner"></div>
       <p>Carregando modelos...</p>
@@ -48,21 +49,35 @@
       <p>Nenhum produto disponível no momento.</p>
     </div>
 
-    <!-- Removendo classe animate-on-scroll dos cards para corrigir invisibilidade -->
+    <!-- Grid de produtos com imagens - 9 MODELOS -->
     <div class="products-grid" *ngIf="!isLoading && featuredProducts.length > 0">
       <div 
         class="product-card visible" 
         *ngFor="let product of featuredProducts; let i = index" 
         (click)="verDetalhes(product)"
         [style.animation-delay]="(i * 0.1) + 's'">
+        
         <div class="product-image-wrapper">
           <div class="product-image">
-            <div class="no-image">
+            <!-- 🔥 EXIBIR IMAGEM DO TÊNIS - MÉTODO CORRIGIDO -->
+            <img 
+              *ngIf="hasProductImage(product)"
+              [src]="getProductImage(product)" 
+              [alt]="product.nome" 
+              class="product-real-image"
+              (error)="handleImageError($event, product)"
+              (load)="handleImageLoad($event, product)"
+              loading="lazy">
+            
+            <!-- PLACEHOLDER SE NÃO HOUVER IMAGEM -->
+            <div *ngIf="!hasProductImage(product)" class="no-image">
               <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M4.5 16.5c-1.5 1.25-2 5-2 5s3.75-.5 5-2c.625-.75 1-1.5 1-2.5C8.5 15 7 13.5 5 13.5c-1 0-1.75.375-2.5 1M18.5 10C19.5 9 21 8 21 8l-1-1-1-1s-1 1.5-2 2.5c-.5.5-1 .75-1.5.75S14 9 13 8c-1.5-1.5-3.25-2.5-5-2C5 6.5 3 9.5 3 13c0 3 2.5 5 5 5 3.5 0 6.5-2 8-5 .25-.5.5-1 .5-1.5 0-.5-.25-1-.5-1.5"/>
               </svg>
+              <span>Sem imagem</span>
             </div>
           </div>
+          
           <div class="product-overlay">
             <button class="btn-quick-view">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -73,6 +88,7 @@
             </button>
           </div>
         </div>
+        
         <div class="product-info">
           <div class="product-tags">
             <span class="tag material">{{ product.material }}</span>
@@ -80,6 +96,12 @@
           </div>
           <h3 class="product-name">{{ product.nome }}</h3>
           <p class="product-description">{{ product.descricao | slice:0:100 }}{{ product.descricao.length > 100 ? '...' : '' }}</p>
+          
+          <!-- EXIBIR TAMANHOS DISPONÍVEIS -->
+          <div class="tamanhos-disponiveis" *ngIf="product.tamanhos && product.tamanhos.length > 0">
+            <small><strong>Tamanhos:</strong> {{ product.tamanhos.join(', ') }}</small>
+          </div>
+          
           <div class="product-footer">
             <p class="product-price">{{ product.preco | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</p>
             <button class="btn-view-more" (click)="verDetalhes(product); $event.stopPropagation()">
@@ -101,7 +123,6 @@
         <h3>Fortal Tênis</h3>
         <p>Excelência em calçados esportivos</p>
       </div>
-      <!-- REMOVIDAS AS REDES SOCIAIS -->
     </div>
     <div class="footer-bottom">
       <p>© 2025 Fortal Tênis Esportivos — Todos os direitos reservados.</p>

@@ -155,4 +155,5 @@ export class GerenciarMarcasComponent implements OnInit {
 
   get nome() { return this.marcaForm.get('nome'); }
   get siteOficial() { return this.marcaForm.get('siteOficial'); }
+  get anofundacao() { return this.marcaForm.get('anofundacao'); }
 }

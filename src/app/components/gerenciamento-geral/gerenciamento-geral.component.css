@@ -1,91 +1,141 @@
+/* gerenciamento-geral.component.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
 .gerenciamento-container {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 0 2rem;
-  font-family: 'Montserrat Arabic', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
+/* Header modernizado */
 .gerenciamento-header {
   text-align: center;
   margin-bottom: 3rem;
-  background: linear-gradient(135deg, #234859 0%, #1a3642 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
   color: white;
-  padding: 2rem;
-  border-radius: 8px;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(30, 58, 138, 0.3);
   position: relative;
 }
 
 .gerenciamento-header h1 {
   margin: 0 0 0.5rem 0;
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2.8rem;
+  font-weight: 800;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.5px;
 }
 
 .gerenciamento-header p {
-  margin: 0 0 1rem 0;
+  margin: 0;
   opacity: 0.9;
   font-size: 1.1rem;
+  font-weight: 400;
 }
 
 .btn-voltar {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: rgba(255, 255, 255, 0.2);
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.15);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
   cursor: pointer;
-  font-family: 'Montserrat Arabic', sans-serif;
-  transition: background-color 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
 .btn-voltar:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateX(-3px);
 }
 
+/* Grid de gerenciamento modernizado */
 .gerenciamento-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
   margin-bottom: 3rem;
 }
 
 .gerenciamento-card {
   background: #ffffff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
 }
 
 .gerenciamento-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  border-color: #234859;
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border-color: rgba(33, 147, 176, 0.3);
+}
+
+.gerenciamento-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.gerenciamento-card:hover::before {
+  transform: scaleX(1);
 }
 
 .card-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  text-align: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-radius: 20px;
+  color: #1e3a8a;
+  transition: all 0.3s ease;
+}
+
+.gerenciamento-card:hover .card-icon {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+  transform: scale(1.1);
 }
 
 .gerenciamento-card h3 {
-  color: #234859;
+  color: #0f172a;
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
   text-align: center;
 }
 
 .gerenciamento-card p {
-  color: #6c757d;
+  color: #64748b;
   margin: 0 0 1.5rem 0;
-  line-height: 1.5;
+  line-height: 1.6;
   text-align: center;
+  font-size: 0.95rem;
 }
 
 .card-actions {
@@ -94,34 +144,60 @@
 }
 
 .card-status {
-  background-color: #234859;
-  color: #C6D3D9;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.9rem;
   font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
 }
 
+.gerenciamento-card:hover .card-status {
+  background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
+}
+
+/* Footer modernizado */
 .gerenciamento-footer {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  padding: 2rem;
+  border-radius: 16px;
   text-align: center;
-  padding: 1.5rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #234859;
+  border: 2px solid #bfdbfe;
+  box-shadow: 0 4px 15px rgba(30, 58, 138, 0.1);
 }
 
 .gerenciamento-footer p {
   margin: 0;
-  color: #234859;
+  color: #1e3a8a;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .gerenciamento-container {
     padding: 0 1rem;
   }
 
+  .gerenciamento-header {
+    padding: 2rem 1.5rem;
+  }
+
   .gerenciamento-header h1 {
     font-size: 2rem;
+  }
+
+  .btn-voltar {
+    position: static;
+    margin-bottom: 1rem;
+    justify-content: center;
   }
 
   .gerenciamento-grid {
@@ -129,19 +205,26 @@
     gap: 1.5rem;
   }
 
-  .btn-voltar {
-    position: static;
-    margin-bottom: 1rem;
+  .gerenciamento-card {
+    padding: 2rem;
   }
+
   .card-icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 1rem auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f8f9fa;
-  border-radius: 50%;
-  color: #234859;
+    width: 70px;
+    height: 70px;
+  }
 }
+
+@media (max-width: 480px) {
+  .gerenciamento-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .gerenciamento-card {
+    padding: 1.5rem;
+  }
+
+  .gerenciamento-card h3 {
+    font-size: 1.3rem;
+  }
 }
