@@ -36,7 +36,7 @@ export class GerenciarTenisComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private tenisService: TenisService,
+    public tenisService: TenisService,
     private router: Router
   ) {
     this.tenisForm = this.createForm();
@@ -70,16 +70,6 @@ export class GerenciarTenisComponent implements OnInit {
         this.tenisList = tenis;
         this.isLoading = false;
         console.log('Tênis carregados:', tenis);
-        
-        // 🔥 DEBUG: Verificar se as imagens estão vindo do backend
-        tenis.forEach((t, index) => {
-          console.log(`Tênis ${index + 1}:`, {
-            nome: t.nome,
-            imagemUrl: t.imagemUrl,
-            imagensUrls: t.imagensUrls,
-            temImagem: this.tenisService.temImagem(t)
-          });
-        });
       },
       error: (error: any) => {
         console.error('Erro ao carregar tênis:', error);
@@ -136,6 +126,7 @@ export class GerenciarTenisComponent implements OnInit {
           next: (tenisAtualizado: Tenis) => {
             this.imagensExistentes = this.imagensExistentes.filter(img => img !== imagemUrl);
             this.mensagem = 'Imagem removida com sucesso!';
+            this.carregarTenis();
           },
           error: (error: any) => {
             this.mensagem = 'Erro ao remover imagem: ' + error.message;
@@ -203,8 +194,8 @@ export class GerenciarTenisComponent implements OnInit {
         material: this.tenisForm.get('material')?.value,
         tamanhos: this.tamanhosSelecionados,
         ativo: this.tenisForm.get('ativo')?.value,
-        imagemUrl: this.tenisForm.get('imagemUrl')?.value, // Incluir URL da imagem
-        ...ids // Inclui todos os IDs validados
+        imagemUrl: this.tenisForm.get('imagemUrl')?.value,
+        ...ids
       };
 
       console.log('Dados validados sendo enviados:', tenisData);
@@ -217,28 +208,28 @@ export class GerenciarTenisComponent implements OnInit {
           tenisSalvo = await this.tenisService.update(this.tenisEditId, tenisData as Tenis).toPromise() as Tenis;
           this.mensagem = `Tênis "${tenisSalvo.nome}" atualizado com sucesso!`;
         } else {
-          // Modo criação - tenta primeiro o método normal
+          // Modo criação
           try {
             tenisSalvo = await this.tenisService.create(tenisData).toPromise() as Tenis;
             this.mensagem = `Tênis "${tenisSalvo.nome}" cadastrado com sucesso!`;
           } catch (error: any) {
             console.log('Primeiro método falhou, tentando método com estrutura backend...');
-            // Se falhar, tenta o método com estrutura do backend
             try {
               tenisSalvo = await this.tenisService.createComEstruturaBackend(tenisData).toPromise() as Tenis;
               this.mensagem = `Tênis "${tenisSalvo.nome}" cadastrado com sucesso (estrutura backend)!`;
             } catch (error2: any) {
               console.log('Método com estrutura backend falhou, tentando método com IDs fixos...');
-              // Se ainda falhar, tenta o método com IDs fixos
               tenisSalvo = await this.tenisService.createComIDsFixos(tenisData).toPromise() as Tenis;
               this.mensagem = `Tênis "${tenisSalvo.nome}" cadastrado com sucesso (IDs fixos)!`;
             }
           }
         }
 
-        // 🔥 CORREÇÃO: Fazer upload das imagens se houver arquivos selecionados
-        if (this.imagensPreviews.length > 0 && tenisSalvo && tenisSalvo.id) {
-          await this.fazerUploadImagens(tenisSalvo.id);
+        // Upload de imagem APENAS se não houver URL e se houver arquivos selecionados
+        const hasImageUrl = !!this.tenisForm.get('imagemUrl')?.value;
+        if (!hasImageUrl && this.imagensPreviews.length > 0 && tenisSalvo && tenisSalvo.id) {
+          // Faz upload apenas da primeira imagem
+          await this.fazerUploadImagemSimples(tenisSalvo.id, this.imagensPreviews[0].file);
         }
 
         this.carregarTenis();
@@ -264,54 +255,37 @@ export class GerenciarTenisComponent implements OnInit {
     }
   }
 
-  // 🔥 CORREÇÃO: Método de upload corrigido
-  private async fazerUploadImagens(tenisId: number): Promise<void> {
-    if (this.imagensPreviews.length === 0) return;
-
-    // Simular progresso
-    this.uploadProgress = 0;
-    const interval = setInterval(() => {
-      this.uploadProgress += 10;
-      if (this.uploadProgress >= 90) {
-        clearInterval(interval);
-      }
-    }, 100);
-
+  // Método de upload simplificado
+  private async fazerUploadImagemSimples(tenisId: number, file: File): Promise<void> {
     try {
-      const files = this.imagensPreviews.map(preview => preview.file);
+      this.uploadProgress = 30;
+      await this.tenisService.uploadImagem(tenisId, file).toPromise();
+      this.uploadProgress = 100;
+      this.mensagem += ' Imagem carregada com sucesso!';
       
-      // 🔥 CORREÇÃO: Upload de UMA imagem por vez (conforme backend)
-      // O backend atual só suporta upload de uma imagem por vez
-      if (files.length > 0) {
-        // Faz upload apenas da primeira imagem
-        await this.tenisService.uploadImagem(tenisId, files[0]).toPromise();
-        
-        this.uploadProgress = 100;
-        this.mensagem += ' Imagem carregada com sucesso!';
-        
-        // Limpar após upload bem-sucedido
-        setTimeout(() => {
-          this.imagensPreviews = [];
-          this.uploadProgress = 0;
-        }, 2000);
-      }
+      setTimeout(() => {
+        this.imagensPreviews = [];
+        this.uploadProgress = 0;
+      }, 2000);
       
     } catch (error: any) {
-      this.mensagem += ` Erro ao carregar imagem: ${error.message}`;
+      console.warn('Aviso ao carregar imagem:', error.message);
       this.uploadProgress = 0;
-    } finally {
-      clearInterval(interval);
     }
+  }
+
+  // Método para tratar erro de carregamento de imagem
+  handleImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'assets/images/placeholder-shoe.png';
+    imgElement.onerror = null;
   }
 
   editarTenis(tenis: Tenis): void {
     this.editMode = true;
     this.tenisEditId = tenis.id || null;
     
-    // Preencher os tamanhos selecionados
     this.tamanhosSelecionados = tenis.tamanhos || [];
-    
-    // Preencher imagens existentes se existirem
     this.imagensExistentes = tenis.imagensUrls || [];
     
     this.tenisForm.patchValue({
@@ -339,13 +313,17 @@ export class GerenciarTenisComponent implements OnInit {
     }
 
     if (confirm(`Tem certeza que deseja excluir o tênis "${nome}"?`)) {
+      this.isLoading = true;
       this.tenisService.delete(id).subscribe({
         next: () => {
           this.mensagem = `Tênis "${nome}" excluído com sucesso!`;
-          this.carregarTenis();
+          // Atualiza a lista imediatamente
+          this.tenisList = this.tenisList.filter(tenis => tenis.id !== id);
+          this.isLoading = false;
         },
         error: (error: any) => {
           this.mensagem = 'Erro ao excluir tênis: ' + error.message;
+          this.isLoading = false;
         }
       });
     }
@@ -388,35 +366,6 @@ export class GerenciarTenisComponent implements OnInit {
 
   irParaGerenciamentoGeral(): void {
     this.router.navigate(['/gerenciamento-geral']);
-  }
-
-  // Método para usar URL de imagem em vez de upload
-  usarUrlImagem(): void {
-    const url = this.tenisForm.get('imagemUrl')?.value;
-    if (url && url.trim() !== '') {
-      this.mensagem = 'URL da imagem definida. O upload de arquivos será ignorado.';
-      this.imagensPreviews = []; // Limpa uploads se houver URL
-    }
-  }
-
-  // Método para limpar URL da imagem
-  limparUrlImagem(): void {
-    this.tenisForm.patchValue({ imagemUrl: '' });
-  }
-
-  // 🔥 NOVO MÉTODO: Testar se o backend está retornando imagens
-  testarImagensBackend(): void {
-    console.log('=== TESTE DE IMAGENS DO BACKEND ===');
-    this.tenisList.forEach((tenis, index) => {
-      console.log(`Tênis ${index + 1}:`, {
-        id: tenis.id,
-        nome: tenis.nome,
-        imagemUrl: tenis.imagemUrl,
-        imagensUrls: tenis.imagensUrls,
-        temImagem: this.tenisService.temImagem(tenis),
-        imagemPrincipal: this.tenisService.getImagemPrincipal(tenis)
-      });
-    });
   }
 
   // Getters para validação no template

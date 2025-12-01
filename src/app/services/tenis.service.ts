@@ -36,7 +36,6 @@ export class TenisService {
       tamanhos: tenis.tamanhos || [],
       ativo: tenis.ativo !== undefined ? tenis.ativo : true,
       imagemUrl: tenis.imagemUrl || '',
-      // ESTRUTURA QUE O BACKEND ESPERA
       corId: tenis.corId || 1,
       esporteId: tenis.esporteId || 1,
       marcaId: tenis.marcaId || 1,
@@ -61,7 +60,6 @@ export class TenisService {
       tamanhos: tenis.tamanhos || [],
       ativo: tenis.ativo !== undefined ? tenis.ativo : true,
       imagemUrl: tenis.imagemUrl || '',
-      // ESTRUTURA COM OBJETOS ANINHADOS
       cor: { id: tenis.corId || 1 },
       esporte: { id: tenis.esporteId || 1 },
       marca: { id: tenis.marcaId || 1 },
@@ -86,7 +84,6 @@ export class TenisService {
       tamanhos: tenis.tamanhos || ['40', '41', '42'],
       ativo: true,
       imagemUrl: tenis.imagemUrl || '',
-      // IDs FIXOS para teste
       corId: 1,
       esporteId: 1,
       marcaId: 1,
@@ -103,7 +100,6 @@ export class TenisService {
   // MÉTODO PARA FORMATAR PREÇO
   private formatarPreco(preco: any): number {
     if (typeof preco === 'string') {
-      // Remove caracteres não numéricos e substitui vírgula por ponto
       const precoLimpo = preco.replace(/[^\d,]/g, '').replace(',', '.');
       return parseFloat(precoLimpo) || 0;
     }
@@ -139,27 +135,27 @@ export class TenisService {
     );
   }
 
-  // 🔥 MÉTODOS PARA UPLOAD DE IMAGENS - CORRIGIDOS
+  // MÉTODO PARA UPLOAD DE IMAGEM - CORRIGIDO
   uploadImagem(tenisId: number, file: File): Observable<Tenis> {
+    // Verifica se o arquivo existe
+    if (!file) {
+      return throwError(() => new Error('Nenhum arquivo selecionado'));
+    }
+    
     const formData = new FormData();
     formData.append('file', file);
     
-    // 🔥 ENDPOINT CORRETO: upload-imagem (singular)
+    console.log(`Fazendo upload de imagem para tênis ID: ${tenisId}`);
+    console.log(`Arquivo: ${file.name}, Tipo: ${file.type}, Tamanho: ${file.size} bytes`);
+    
     return this.http.post<Tenis>(`${this.apiUrl}/${tenisId}/upload-imagem`, formData).pipe(
-      catchError(this.handleError)
+      catchError((error) => {
+        console.warn('Erro no upload de imagem (pode ser esperado se já houver imagem):', error);
+        // Retorna um observable vazio para não quebrar o fluxo
+        return throwError(() => new Error('Upload de imagem falhou ou não é necessário'));
+      })
     );
   }
-
-  // 🔥 REMOVER MÉTODO QUE NÃO EXISTE NO BACKEND
-  // uploadImagens(tenisId: number, files: File[]): Observable<Tenis> {
-  //   const formData = new FormData();
-  //   files.forEach(file => {
-  //     formData.append('files', file);
-  //   });
-  //   return this.http.post<Tenis>(`${this.apiUrl}/${tenisId}/upload-imagens`, formData).pipe(
-  //     catchError(this.handleError)
-  //   );
-  // }
 
   // MÉTODOS PARA REMOVER IMAGENS
   removerImagem(tenisId: number): Observable<Tenis> {
@@ -315,7 +311,7 @@ export class TenisService {
     );
   }
 
-  // 🔥 NOVO MÉTODO: Buscar imagem principal do tênis
+  // MÉTODO: Buscar imagem principal do tênis
   getImagemPrincipal(tenis: Tenis): string {
     if (tenis.imagensUrls && tenis.imagensUrls.length > 0) {
       return tenis.imagensUrls[0];
@@ -323,7 +319,7 @@ export class TenisService {
     return tenis.imagemUrl || 'assets/images/placeholder-shoe.png';
   }
 
-  // 🔥 NOVO MÉTODO: Verificar se tem imagem
+  // MÉTODO: Verificar se tem imagem
   temImagem(tenis: Tenis): boolean {
     return !!(tenis.imagemUrl || (tenis.imagensUrls && tenis.imagensUrls.length > 0));
   }
@@ -333,29 +329,24 @@ export class TenisService {
     console.error('Erro completo na requisição:', error);
     
     let errorMessage = 'Erro desconhecido';
-    let detalhes = '';
     
     if (error.error instanceof ErrorEvent) {
-      // Erro do cliente
       errorMessage = `Erro: ${error.error.message}`;
     } else {
-      // Erro do servidor
       errorMessage = `Erro ${error.status}: ${error.error?.message || error.message}`;
       
-      // Adiciona detalhes específicos para erro 400
+      // Tratamento específico para erro 400
       if (error.status === 400) {
-        detalhes = error.error?.erro || error.error || 'Dados inválidos enviados para o servidor';
+        const detalhes = error.error?.erro || error.error || 'Dados inválidos enviados';
         console.log('Detalhes do erro 400:', detalhes);
-      }
-      
-      // Adiciona detalhes específicos para erro 404
-      if (error.status === 404) {
-        detalhes = 'Endpoint não encontrado. Verifique a URL.';
-        console.log('Endpoint não encontrado:', error.url);
+        
+        // Não mostra erro detalhado para o usuário se for relacionado a imagem
+        if (detalhes.includes('deserialize') || detalhes.includes('imagem')) {
+          errorMessage = 'Erro no processamento da imagem';
+        }
       }
     }
     
-    const erroCompleto = detalhes ? `${errorMessage} - ${detalhes}` : errorMessage;
-    return throwError(() => new Error(erroCompleto));
+    return throwError(() => new Error(errorMessage));
   }
 }
